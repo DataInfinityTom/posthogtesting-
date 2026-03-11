@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopDemo - 精选好物</title>
+
+<script>
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(a!==void 0?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return a!=="posthog"&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId".split(","),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init('phc_xcJNm2cMDvpnEstAnrvPWy2FD3d3FHzrkRuA4IzuZkR', {
+    api_host: 'https://us.i.posthog.com',
+    person_profiles: 'always',
+    session_recording: { enabled: true },
+    autocapture: true,
+  });
+</script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#f5f5f5; color:#333; }
+
+nav { background:#fff; padding:0 40px; height:60px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 1px 4px rgba(0,0,0,.08); position:sticky; top:0; z-index:100; }
+.logo { font-size:22px; font-weight:700; color:#e44d26; }
+.nav-links { display:flex; gap:24px; list-style:none; }
+.nav-links a { text-decoration:none; color:#555; font-size:14px; transition:color .2s; }
+.nav-links a:hover { color:#e44d26; }
+.nav-right { display:flex; align-items:center; gap:12px; }
+.search-box { padding:7px 14px; border:1px solid #ddd; border-radius:20px; font-size:13px; width:180px; outline:none; }
+.search-box:focus { border-color:#e44d26; }
+.cart-btn { background:#e44d26; color:#fff; border:none; padding:8px 16px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; }
+.cart-count { background:#fff; color:#e44d26; border-radius:50%; width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; margin-left:4px; }
+
+/* USER SWITCHER BANNER */
+.user-bar { background:linear-gradient(90deg,#1a1a2e,#16213e); padding:10px 40px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+.user-bar-label { color:#aaa; font-size:12px; white-space:nowrap; }
+.user-pill { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:24px; padding:6px 14px; cursor:pointer; transition:all .2s; }
+.user-pill:hover, .user-pill.active { background:rgba(233,69,96,.25); border-color:#e94560; }
+.user-pill .avatar { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#fff; }
+.user-pill .uname { font-size:12px; font-weight:600; color:#e8e8e8; }
+.user-pill .uregion { font-size:10px; color:#aaa; }
+.active-badge { background:#e94560; color:#fff; font-size:10px; font-weight:700; padding:1px 6px; border-radius:8px; margin-left:4px; }
+.new-user-btn { background:transparent; border:1px dashed rgba(255,255,255,.3); border-radius:24px; padding:6px 14px; color:#aaa; font-size:12px; cursor:pointer; transition:all .2s; white-space:nowrap; }
+.new-user-btn:hover { border-color:#e94560; color:#e94560; }
+
+.hero { background:linear-gradient(135deg,#e44d26 0%,#f39c12 100%); color:#fff; padding:50px 40px; text-align:center; }
+.hero h1 { font-size:38px; font-weight:800; margin-bottom:10px; }
+.hero p { font-size:15px; opacity:.9; margin-bottom:24px; }
+.hero-btn { background:#fff; color:#e44d26; border:none; padding:12px 32px; border-radius:30px; font-size:15px; font-weight:700; cursor:pointer; transition:transform .15s,box-shadow .15s; }
+.hero-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.2); }
+
+.section { padding:32px 40px; }
+.section-title { font-size:20px; font-weight:700; margin-bottom:20px; }
+.categories { display:flex; gap:10px; flex-wrap:wrap; }
+.cat-tag { padding:7px 18px; border-radius:20px; border:2px solid #ddd; background:#fff; cursor:pointer; font-size:13px; font-weight:600; transition:all .15s; }
+.cat-tag:hover,.cat-tag.active { border-color:#e44d26; color:#e44d26; background:#fff5f3; }
+
+.products { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:18px; }
+.product-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.06); transition:transform .2s,box-shadow .2s; cursor:pointer; }
+.product-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,.12); }
+.product-img { width:100%; height:160px; display:flex; align-items:center; justify-content:center; font-size:56px; background:#f8f8f8; }
+.product-info { padding:12px; }
+.product-name { font-size:14px; font-weight:600; margin-bottom:4px; }
+.product-desc { font-size:11px; color:#888; margin-bottom:8px; line-height:1.5; }
+.product-footer { display:flex; align-items:center; justify-content:space-between; }
+.price { font-size:17px; font-weight:700; color:#e44d26; }
+.orig-price { font-size:11px; color:#bbb; text-decoration:line-through; margin-left:4px; }
+.add-btn { background:#e44d26; color:#fff; border:none; padding:6px 12px; border-radius:7px; font-size:11px; font-weight:600; cursor:pointer; }
+.add-btn:hover { background:#c0392b; }
+.badge { display:inline-block; background:#f39c12; color:#fff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:8px; margin-bottom:4px; }
+
+.overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:200; display:none; }
+.cart-drawer { position:fixed; right:0; top:0; bottom:0; width:340px; background:#fff; z-index:201; transform:translateX(100%); transition:transform .3s; display:flex; flex-direction:column; }
+.cart-drawer.open { transform:translateX(0); }
+.overlay.show { display:block; }
+.drawer-header { padding:18px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; }
+.drawer-header h3 { font-size:17px; font-weight:700; }
+.close-btn { background:none; border:none; font-size:22px; cursor:pointer; color:#888; }
+.cart-items { flex:1; overflow-y:auto; padding:14px; }
+.cart-item { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid #f0f0f0; align-items:center; }
+.cart-item-emoji { font-size:32px; width:44px; text-align:center; }
+.cart-item-info { flex:1; }
+.cart-item-name { font-size:13px; font-weight:600; }
+.cart-item-price { font-size:12px; color:#e44d26; }
+.cart-item-remove { background:none; border:none; color:#bbb; cursor:pointer; font-size:16px; }
+.cart-footer { padding:18px; border-top:1px solid #eee; }
+.cart-total { display:flex; justify-content:space-between; font-size:15px; font-weight:700; margin-bottom:14px; }
+.checkout-btn { width:100%; background:#e44d26; color:#fff; border:none; padding:13px; border-radius:10px; font-size:14px; font-weight:700; cursor:pointer; }
+.checkout-btn:hover { background:#c0392b; }
+.empty-cart { text-align:center; padding:40px 0; color:#bbb; font-size:14px; }
+
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:300; display:none; align-items:center; justify-content:center; }
+.modal-overlay.show { display:flex; }
+.modal { background:#fff; border-radius:16px; padding:28px; width:400px; max-width:90vw; position:relative; }
+.modal h2 { font-size:20px; font-weight:700; margin-bottom:6px; }
+.modal p { color:#666; font-size:13px; margin-bottom:16px; }
+.modal input { width:100%; padding:9px 12px; border:1px solid #ddd; border-radius:8px; font-size:13px; margin-bottom:10px; outline:none; }
+.modal input:focus { border-color:#e44d26; }
+.modal-btns { display:flex; gap:8px; }
+.modal-btns button { flex:1; padding:10px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; border:none; }
+.btn-primary { background:#e44d26; color:#fff; }
+.btn-secondary { background:#f0f0f0; color:#333; }
+.modal-close { position:absolute; top:14px; right:14px; background:none; border:none; font-size:18px; cursor:pointer; color:#aaa; }
+
+.toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:#333; color:#fff; padding:11px 22px; border-radius:22px; font-size:13px; font-weight:500; z-index:400; transition:transform .3s; pointer-events:none; }
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+/* EVENT LOG */
+.event-log { position:fixed; bottom:16px; right:16px; background:#1a1a2e; width:290px; border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.35); z-index:150; }
+.log-header { background:#16213e; padding:9px 12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
+.log-header span { color:#e94560; font-size:11px; font-weight:700; }
+.log-header small { color:#aaa; font-size:10px; }
+.log-body { max-height:160px; overflow-y:auto; padding:6px; }
+.log-item { font-size:10px; color:#a8dadc; padding:3px 6px; border-left:2px solid #e94560; margin-bottom:3px; background:rgba(233,69,96,.08); border-radius:0 4px 4px 0; }
+.log-time { color:#666; }
+
+footer { background:#222; color:#aaa; text-align:center; padding:20px; font-size:12px; margin-top:32px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">🛍 ShopDemo</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="ph('nav_clicked',{page:'首页'})">首页</a></li>
+    <li><a href="#" onclick="ph('nav_clicked',{page:'新品'})">新品</a></li>
+    <li><a href="#" onclick="ph('nav_clicked',{page:'特卖'})">特卖</a></li>
+    <li><a href="#" onclick="ph('nav_clicked',{page:'品牌'})">品牌</a></li>
+  </ul>
+  <div class="nav-right">
+    <input class="search-box" type="text" placeholder="搜索商品..." oninput="handleSearch(this.value)">
+    <button class="cart-btn" onclick="openCart()">🛒 购物车 <span class="cart-count" id="cartCount">0</span></button>
+  </div>
+</nav>
+
+<!-- 模拟用户切换栏 -->
+<div class="user-bar">
+  <span class="user-bar-label">🎭 模拟用户：</span>
+  <div id="userPills"></div>
+  <button class="new-user-btn" onclick="addRandomUser()">＋ 随机新用户</button>
+</div>
+
+<div class="hero">
+  <h1>🔥 春季大促 · 全场5折起</h1>
+  <p>精选全球好物，限时特惠，错过再等一年</p>
+  <button class="hero-btn" onclick="ph('hero_cta_clicked',{}); window.scrollTo({top:500,behavior:'smooth'})">立即抢购</button>
+</div>
+
+<div class="section">
+  <div class="categories" id="categories">
+    <button class="cat-tag active" onclick="filterCat('全部',this)">全部</button>
+    <button class="cat-tag" onclick="filterCat('数码',this)">📱 数码</button>
+    <button class="cat-tag" onclick="filterCat('服饰',this)">👕 服饰</button>
+    <button class="cat-tag" onclick="filterCat('美妆',this)">💄 美妆</button>
+    <button class="cat-tag" onclick="filterCat('家居',this)">🏠 家居</button>
+    <button class="cat-tag" onclick="filterCat('食品',this)">🍜 食品</button>
+  </div>
+</div>
+
+<div class="section" style="padding-top:0">
+  <div class="section-title">热卖商品</div>
+  <div class="products" id="productGrid"></div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="drawer-header">
+    <h3>🛒 购物车</h3>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total"><span>合计</span><span id="cartTotal">¥0</span></div>
+    <button class="checkout-btn" onclick="checkout()">立即结算</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2>确认下单</h2>
+    <p id="modalDesc">以当前用户身份提交订单</p>
+    <div class="modal-btns">
+      <button class="btn-primary" onclick="doOrder()">确认下单 🎉</button>
+      <button class="btn-secondary" onclick="closeModal()">取消</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="event-log">
+  <div class="log-header" onclick="toggleLog()">
+    <span>📊 PostHog 事件日志</span>
+    <small id="logToggle">收起 ▲</small>
+  </div>
+  <div class="log-body" id="logBody"></div>
+</div>
+
+<footer>© 2025 ShopDemo · PostHog 多用户测试演示</footer>
+
+<script>
+// ─── 随机用户数据库 ───────────────────────────────────────
+const FIRST_NAMES = ['Alice','Bob','Carlos','Diana','Emily','Frank','Grace','Henry','Iris','James','Karen','Leo','Mia','Noah','Olivia','Paul'];
+const LAST_NAMES  = ['Wang','Smith','Garcia','Kim','Chen','Patel','Müller','Rossi','Ahmed','Silva','Johnson','Tanaka'];
+const DOMAINS     = ['gmail.com','yahoo.com','outlook.com','icloud.com','hotmail.com','proton.me'];
+const REGIONS = [
+  { city:'Beijing',    country:'China',         flag:'🇨🇳', tz:'Asia/Shanghai' },
+  { city:'Shanghai',   country:'China',         flag:'🇨🇳', tz:'Asia/Shanghai' },
+  { city:'Singapore',  country:'Singapore',     flag:'🇸🇬', tz:'Asia/Singapore' },
+  { city:'New York',   country:'USA',           flag:'🇺🇸', tz:'America/New_York' },
+  { city:'London',     country:'UK',            flag:'🇬🇧', tz:'Europe/London' },
+  { city:'Tokyo',      country:'Japan',         flag:'🇯🇵', tz:'Asia/Tokyo' },
+  { city:'Sydney',     country:'Australia',     flag:'🇦🇺', tz:'Australia/Sydney' },
+  { city:'Dubai',      country:'UAE',           flag:'🇦🇪', tz:'Asia/Dubai' },
+  { city:'Paris',      country:'France',        flag:'🇫🇷', tz:'Europe/Paris' },
+  { city:'Kuala Lumpur',country:'Malaysia',     flag:'🇲🇾', tz:'Asia/Kuala_Lumpur' },
+];
+const DEVICES  = ['desktop','mobile','tablet'];
+const BROWSERS = ['Chrome','Safari','Firefox','Edge'];
+const PLANS    = ['free','pro','enterprise'];
+const AVATARS  = ['😀','😎','🤓','🧑‍💻','👩‍💼','🧔','👩‍🎨','🧑‍🚀','👨‍🍳','🧑‍🔬'];
+
+function rand(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
+function randInt(a,b) { return Math.floor(Math.random()*(b-a+1))+a; }
+
+function generateUser() {
+  const fn = rand(FIRST_NAMES), ln = rand(LAST_NAMES);
+  const region = rand(REGIONS);
+  const domain = rand(DOMAINS);
+  const email  = `${fn.toLowerCase()}.${ln.toLowerCase()}${randInt(1,99)}@${domain}`;
+  return {
+    id: 'user_' + Math.random().toString(36).slice(2,9),
+    name: `${fn} ${ln}`,
+    email,
+    avatar: rand(AVATARS),
+    region,
+    device: rand(DEVICES),
+    browser: rand(BROWSERS),
+    plan: rand(PLANS),
+    age: randInt(18,55),
+    signupDays: randInt(1,730),
+  };
+}
+
+// ─── 初始用户池（5个预置用户）────────────────────────────
+let users = Array.from({length:5}, generateUser);
+let currentUser = users[0];
+let cart = [];
+let logOpen = true;
+
+// ─── PostHog 安全封装 ─────────────────────────────────────
+function ph(event, props={}) {
+  try {
+    if (typeof posthog!=='undefined' && typeof posthog.capture==='function') {
+      posthog.capture(event, { ...props, simulated_user: currentUser.name });
+    }
+  } catch(e) {}
+  logEvent(event, props);
+}
+
+function phIdentify(user) {
+  try {
+    if (typeof posthog!=='undefined' && typeof posthog.identify==='function') {
+      posthog.reset(); // 重置当前 session，模拟新用户
+      posthog.identify(user.email, {
+        name:          user.name,
+        email:         user.email,
+        city:          user.region.city,
+        country:       user.region.country,
+        timezone:      user.region.tz,
+        device_type:   user.device,
+        browser:       user.browser,
+        plan:          user.plan,
+        age:           user.age,
+        days_since_signup: user.signupDays,
+      });
+    }
+  } catch(e) {}
+}
+
+// ─── 切换当前用户 ─────────────────────────────────────────
+function switchUser(user) {
+  currentUser = user;
+  cart = [];
+  document.getElementById('cartCount').textContent = 0;
+  phIdentify(user);
+  renderUserPills();
+  showToast(`已切换为 ${user.avatar} ${user.name} · ${user.region.flag} ${user.region.city}`);
+  logEvent('user_switched', { name: user.name, email: user.email, city: user.region.city });
+  ph('$pageview', { page: 'home' });
+}
+
+function addRandomUser() {
+  const u = generateUser();
+  users.push(u);
+  switchUser(u);
+}
+
+// ─── 渲染用户切换栏 ───────────────────────────────────────
+function renderUserPills() {
+  const container = document.getElementById('userPills');
+  container.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;';
+  container.innerHTML = users.map(u => `
+    <div class="user-pill ${u.id===currentUser.id?'active':''}" onclick="switchUser(users.find(x=>x.id==='${u.id}'))">
+      <div class="avatar" style="background:${strColor(u.email)}">${u.avatar}</div>
+      <div>
+        <div class="uname">${u.name} ${u.id===currentUser.id?'<span class="active-badge">当前</span>':''}</div>
+        <div class="uregion">${u.region.flag} ${u.region.city} · ${u.email.split('@')[1]}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function strColor(str) {
+  let h = 0;
+  for (let c of str) h = (h*31 + c.charCodeAt(0)) & 0xffffff;
+  const colors = ['#e94560','#0f3460','#533483','#2d6a4f','#e76f51','#264653','#2a9d8f','#e9c46a'];
+  return colors[h % colors.length];
+}
+
+// ─── 商品数据 ─────────────────────────────────────────────
+const ALL_PRODUCTS = [
+  {id:1,name:'AirPods Pro',emoji:'🎧',cat:'数码',price:1299,orig:1799,desc:'主动降噪，沉浸音效体验',badge:'热销'},
+  {id:2,name:'机械键盘 K2',emoji:'⌨️',cat:'数码',price:399,orig:599,desc:'Cherry MX红轴，RGB背光',badge:''},
+  {id:3,name:'4K 便携显示器',emoji:'🖥️',cat:'数码',price:1099,orig:1399,desc:'15.6英寸，USB-C直连',badge:'新品'},
+  {id:4,name:'纯棉T恤 经典款',emoji:'👕',cat:'服饰',price:89,orig:149,desc:'100%有机棉，多色可选',badge:''},
+  {id:5,name:'牛仔外套 复古',emoji:'🧥',cat:'服饰',price:299,orig:499,desc:'水洗工艺，版型宽松',badge:'限量'},
+  {id:6,name:'精华液 Pro版',emoji:'💆',cat:'美妆',price:259,orig:359,desc:'烟酰胺+玻尿酸双效',badge:'爆款'},
+  {id:7,name:'香氛蜡烛套装',emoji:'🕯️',cat:'家居',price:128,orig:198,desc:'天然大豆蜡，持香60h',badge:''},
+  {id:8,name:'网红螺蛳粉',emoji:'🍜',cat:'食品',price:38,orig:58,desc:'正宗柳州配方，臭香鲜辣',badge:'必买'},
+];
+
+function renderProducts(list) {
+  document.getElementById('productGrid').innerHTML = list.map(p => `
+    <div class="product-card" onclick="ph('product_viewed',{product_id:${p.id},product_name:'${p.name}',price:${p.price},category:'${p.cat}'})">
+      <div class="product-img">${p.emoji}</div>
+      <div class="product-info">
+        ${p.badge?`<div class="badge">${p.badge}</div>`:''}
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-footer">
+          <div><span class="price">¥${p.price}</span><span class="orig-price">¥${p.orig}</span></div>
+          <button class="add-btn" onclick="event.stopPropagation();addToCart(${p.id})">加购</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+renderProducts(ALL_PRODUCTS);
+
+function filterCat(cat, el) {
+  document.querySelectorAll('.cat-tag').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const list = cat==='全部' ? ALL_PRODUCTS : ALL_PRODUCTS.filter(p=>p.cat===cat);
+  renderProducts(list);
+  ph('category_filter', {category:cat, result_count:list.length});
+}
+
+let searchTimer;
+function handleSearch(val) {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(()=>{
+    const list = val ? ALL_PRODUCTS.filter(p=>p.name.includes(val)||p.desc.includes(val)) : ALL_PRODUCTS;
+    renderProducts(list);
+    if(val) ph('search', {query:val, result_count:list.length});
+  }, 600);
+}
+
+function addToCart(id) {
+  const p = ALL_PRODUCTS.find(x=>x.id===id);
+  cart.push(p);
+  document.getElementById('cartCount').textContent = cart.length;
+  showToast(`✅ ${p.name} 已加入购物车`);
+  ph('add_to_cart', {product_id:id, product_name:p.name, price:p.price, cart_size:cart.length});
+}
+
+function openCart() {
+  renderCart();
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+  ph('cart_opened', {cart_size:cart.length});
+}
+function closeCart() {
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+function renderCart() {
+  const el = document.getElementById('cartItems'), ft = document.getElementById('cartFooter');
+  if(!cart.length) { el.innerHTML='<div class="empty-cart">🛒<br>购物车空空如也</div>'; ft.style.display='none'; return; }
+  el.innerHTML = cart.map((p,i)=>`
+    <div class="cart-item">
+      <div class="cart-item-emoji">${p.emoji}</div>
+      <div class="cart-item-info"><div class="cart-item-name">${p.name}</div><div class="cart-item-price">¥${p.price}</div></div>
+      <button class="cart-item-remove" onclick="removeCart(${i})">✕</button>
+    </div>`).join('');
+  document.getElementById('cartTotal').textContent = '¥'+cart.reduce((s,p)=>s+p.price,0);
+  ft.style.display='block';
+}
+function removeCart(i) {
+  const p=cart[i]; cart.splice(i,1);
+  document.getElementById('cartCount').textContent=cart.length;
+  renderCart();
+  ph('remove_from_cart',{product_id:p.id,product_name:p.name});
+}
+
+function checkout() {
+  const total = cart.reduce((s,p)=>s+p.price,0);
+  document.getElementById('modalDesc').textContent =
+    `${currentUser.avatar} ${currentUser.name} (${currentUser.email}) · ¥${total} · ${cart.length} 件商品`;
+  ph('checkout_initiated',{total_amount:total,item_count:cart.length,items:cart.map(p=>p.name)});
+  closeCart();
+  document.getElementById('loginModal').classList.add('show');
+}
+function closeModal() { document.getElementById('loginModal').classList.remove('show'); }
+function doOrder() {
+  const total = cart.reduce((s,p)=>s+p.price,0);
+  ph('order_completed',{
+    total_amount: total, item_count: cart.length,
+    items: cart.map(p=>p.name),
+    user_email: currentUser.email,
+    user_city: currentUser.region.city,
+    user_country: currentUser.region.country,
+    user_plan: currentUser.plan,
+    user_device: currentUser.device,
+  });
+  cart=[]; document.getElementById('cartCount').textContent=0;
+  closeModal();
+  showToast(`🎉 ${currentUser.name} 订单提交成功！共 ¥${total}`);
+}
+
+// ─── 工具 ─────────────────────────────────────────────────
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+function logEvent(name,props) {
+  const body=document.getElementById('logBody');
+  const time=new Date().toLocaleTimeString('zh-CN',{hour12:false});
+  const ps=Object.entries(props||{}).slice(0,3).map(([k,v])=>`${k}:${JSON.stringify(v)}`).join(' ');
+  const el=document.createElement('div'); el.className='log-item';
+  el.innerHTML=`<span class="log-time">${time}</span> <strong style="color:#e94560">${name}</strong>${ps?'<br><small>'+ps+'</small>':''}`;
+  body.prepend(el);
+}
+function toggleLog() {
+  const b=document.getElementById('logBody'), t=document.getElementById('logToggle');
+  logOpen=!logOpen; b.style.display=logOpen?'block':'none';
+  t.textContent=logOpen?'收起 ▲':'展开 ▼';
+}
+
+// ─── 初始化 ───────────────────────────────────────────────
+renderUserPills();
+phIdentify(currentUser); // 以第一个用户身份识别
+ph('$pageview',{page:'home'});
+</script>
+</body>
+</html>
