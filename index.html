@@ -1,457 +1,654 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ShopDemo - 精选好物</title>
+<title>ShopDemo</title>
 
 <script>
-  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(a!==void 0?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return a!=="posthog"&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId".split(","),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-  posthog.init('phc_xcJNm2cMDvpnEstAnrvPWy2FD3d3FHzrkRuA4IzuZkR', {
-    api_host: 'https://us.i.posthog.com',
-    person_profiles: 'always',
-    session_recording: { enabled: true },
-    autocapture: true,
-  });
+!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(a!==void 0?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return a!=="posthog"&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId".split(","),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init('phc_xcJNm2cMDvpnEstAnrvPWy2FD3d3FHzrkRuA4IzuZkR',{
+  api_host:'https://us.i.posthog.com',
+  person_profiles:'always',
+  session_recording:{enabled:true},
+  autocapture:true,
+  loaded: function(ph){ ph.reloadFeatureFlags(); }
+});
 </script>
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#f5f5f5; color:#333; }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;color:#333;min-height:100vh;}
 
-nav { background:#fff; padding:0 40px; height:60px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 1px 4px rgba(0,0,0,.08); position:sticky; top:0; z-index:100; }
-.logo { font-size:22px; font-weight:700; color:#e44d26; }
-.nav-links { display:flex; gap:24px; list-style:none; }
-.nav-links a { text-decoration:none; color:#555; font-size:14px; transition:color .2s; }
-.nav-links a:hover { color:#e44d26; }
-.nav-right { display:flex; align-items:center; gap:12px; }
-.search-box { padding:7px 14px; border:1px solid #ddd; border-radius:20px; font-size:13px; width:180px; outline:none; }
-.search-box:focus { border-color:#e44d26; }
-.cart-btn { background:#e44d26; color:#fff; border:none; padding:8px 16px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; }
-.cart-count { background:#fff; color:#e44d26; border-radius:50%; width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; margin-left:4px; }
+/* NAV */
+nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
+.logo{font-size:20px;font-weight:800;color:#e44d26;cursor:pointer;}
+.nav-links{display:flex;gap:4px;}
+.nav-link{padding:7px 14px;border-radius:8px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:#555;transition:all .15s;}
+.nav-link:hover{background:#f5f5f5;color:#e44d26;}
+.nav-link.active{background:#fff5f3;color:#e44d26;font-weight:700;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.cart-btn{background:#e44d26;color:#fff;border:none;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;}
+.cart-badge{background:#fff;color:#e44d26;border-radius:50%;width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
 
-/* USER SWITCHER BANNER */
-.user-bar { background:linear-gradient(90deg,#1a1a2e,#16213e); padding:10px 40px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
-.user-bar-label { color:#aaa; font-size:12px; white-space:nowrap; }
-.user-pill { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:24px; padding:6px 14px; cursor:pointer; transition:all .2s; }
-.user-pill:hover, .user-pill.active { background:rgba(233,69,96,.25); border-color:#e94560; }
-.user-pill .avatar { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#fff; }
-.user-pill .uname { font-size:12px; font-weight:600; color:#e8e8e8; }
-.user-pill .uregion { font-size:10px; color:#aaa; }
-.active-badge { background:#e94560; color:#fff; font-size:10px; font-weight:700; padding:1px 6px; border-radius:8px; margin-left:4px; }
-.new-user-btn { background:transparent; border:1px dashed rgba(255,255,255,.3); border-radius:24px; padding:6px 14px; color:#aaa; font-size:12px; cursor:pointer; transition:all .2s; white-space:nowrap; }
-.new-user-btn:hover { border-color:#e94560; color:#e94560; }
+/* USER BAR */
+.user-bar{background:#16213e;padding:8px 32px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.user-bar-label{color:#888;font-size:11px;white-space:nowrap;}
+.user-pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:4px 12px;cursor:pointer;transition:all .15s;}
+.user-pill:hover,.user-pill.active{background:rgba(233,69,96,.2);border-color:#e94560;}
+.u-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:700;}
+.u-name{font-size:11px;font-weight:600;color:#ddd;}
+.u-region{font-size:10px;color:#888;}
+.active-tag{background:#e94560;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:6px;}
+.add-user-btn{border:1px dashed rgba(255,255,255,.25);background:none;border-radius:20px;padding:4px 12px;color:#888;font-size:11px;cursor:pointer;white-space:nowrap;}
+.add-user-btn:hover{border-color:#e94560;color:#e94560;}
 
-.hero { background:linear-gradient(135deg,#e44d26 0%,#f39c12 100%); color:#fff; padding:50px 40px; text-align:center; }
-.hero h1 { font-size:38px; font-weight:800; margin-bottom:10px; }
-.hero p { font-size:15px; opacity:.9; margin-bottom:24px; }
-.hero-btn { background:#fff; color:#e44d26; border:none; padding:12px 32px; border-radius:30px; font-size:15px; font-weight:700; cursor:pointer; transition:transform .15s,box-shadow .15s; }
-.hero-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.2); }
+/* FEATURE FLAG BANNER */
+.ff-banner{display:none;padding:10px 32px;font-size:13px;font-weight:600;text-align:center;animation:slideDown .3s ease;}
+.ff-banner.promo{background:linear-gradient(90deg,#f39c12,#e44d26);color:#fff;display:block;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 
-.section { padding:32px 40px; }
-.section-title { font-size:20px; font-weight:700; margin-bottom:20px; }
-.categories { display:flex; gap:10px; flex-wrap:wrap; }
-.cat-tag { padding:7px 18px; border-radius:20px; border:2px solid #ddd; background:#fff; cursor:pointer; font-size:13px; font-weight:600; transition:all .15s; }
-.cat-tag:hover,.cat-tag.active { border-color:#e44d26; color:#e44d26; background:#fff5f3; }
+/* PAGE WRAPPER */
+.page{display:none;animation:fadeIn .2s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-.products { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:18px; }
-.product-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.06); transition:transform .2s,box-shadow .2s; cursor:pointer; }
-.product-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,.12); }
-.product-img { width:100%; height:160px; display:flex; align-items:center; justify-content:center; font-size:56px; background:#f8f8f8; }
-.product-info { padding:12px; }
-.product-name { font-size:14px; font-weight:600; margin-bottom:4px; }
-.product-desc { font-size:11px; color:#888; margin-bottom:8px; line-height:1.5; }
-.product-footer { display:flex; align-items:center; justify-content:space-between; }
-.price { font-size:17px; font-weight:700; color:#e44d26; }
-.orig-price { font-size:11px; color:#bbb; text-decoration:line-through; margin-left:4px; }
-.add-btn { background:#e44d26; color:#fff; border:none; padding:6px 12px; border-radius:7px; font-size:11px; font-weight:600; cursor:pointer; }
-.add-btn:hover { background:#c0392b; }
-.badge { display:inline-block; background:#f39c12; color:#fff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:8px; margin-bottom:4px; }
+/* BREADCRUMB */
+.breadcrumb{padding:12px 32px;font-size:12px;color:#999;display:flex;gap:6px;align-items:center;}
+.breadcrumb span{cursor:pointer;color:#e44d26;}
+.breadcrumb span:hover{text-decoration:underline;}
 
-.overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:200; display:none; }
-.cart-drawer { position:fixed; right:0; top:0; bottom:0; width:340px; background:#fff; z-index:201; transform:translateX(100%); transition:transform .3s; display:flex; flex-direction:column; }
-.cart-drawer.open { transform:translateX(0); }
-.overlay.show { display:block; }
-.drawer-header { padding:18px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; }
-.drawer-header h3 { font-size:17px; font-weight:700; }
-.close-btn { background:none; border:none; font-size:22px; cursor:pointer; color:#888; }
-.cart-items { flex:1; overflow-y:auto; padding:14px; }
-.cart-item { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid #f0f0f0; align-items:center; }
-.cart-item-emoji { font-size:32px; width:44px; text-align:center; }
-.cart-item-info { flex:1; }
-.cart-item-name { font-size:13px; font-weight:600; }
-.cart-item-price { font-size:12px; color:#e44d26; }
-.cart-item-remove { background:none; border:none; color:#bbb; cursor:pointer; font-size:16px; }
-.cart-footer { padding:18px; border-top:1px solid #eee; }
-.cart-total { display:flex; justify-content:space-between; font-size:15px; font-weight:700; margin-bottom:14px; }
-.checkout-btn { width:100%; background:#e44d26; color:#fff; border:none; padding:13px; border-radius:10px; font-size:14px; font-weight:700; cursor:pointer; }
-.checkout-btn:hover { background:#c0392b; }
-.empty-cart { text-align:center; padding:40px 0; color:#bbb; font-size:14px; }
+/* HOME */
+.hero{background:linear-gradient(135deg,#e44d26,#f39c12);color:#fff;padding:56px 32px;text-align:center;}
+.hero h1{font-size:36px;font-weight:800;margin-bottom:10px;}
+.hero p{font-size:15px;opacity:.9;margin-bottom:24px;}
+.hero-btn{background:#fff;color:#e44d26;border:none;padding:12px 32px;border-radius:28px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .15s;}
+.hero-btn:hover{transform:translateY(-2px);}
 
-.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:300; display:none; align-items:center; justify-content:center; }
-.modal-overlay.show { display:flex; }
-.modal { background:#fff; border-radius:16px; padding:28px; width:400px; max-width:90vw; position:relative; }
-.modal h2 { font-size:20px; font-weight:700; margin-bottom:6px; }
-.modal p { color:#666; font-size:13px; margin-bottom:16px; }
-.modal input { width:100%; padding:9px 12px; border:1px solid #ddd; border-radius:8px; font-size:13px; margin-bottom:10px; outline:none; }
-.modal input:focus { border-color:#e44d26; }
-.modal-btns { display:flex; gap:8px; }
-.modal-btns button { flex:1; padding:10px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; border:none; }
-.btn-primary { background:#e44d26; color:#fff; }
-.btn-secondary { background:#f0f0f0; color:#333; }
-.modal-close { position:absolute; top:14px; right:14px; background:none; border:none; font-size:18px; cursor:pointer; color:#aaa; }
+.section{padding:28px 32px;}
+.section-title{font-size:18px;font-weight:700;margin-bottom:16px;}
 
-.toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:#333; color:#fff; padding:11px 22px; border-radius:22px; font-size:13px; font-weight:500; z-index:400; transition:transform .3s; pointer-events:none; }
-.toast.show { transform:translateX(-50%) translateY(0); }
+/* CATEGORY CHIPS */
+.cat-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.chip{padding:6px 16px;border-radius:16px;border:2px solid #ddd;background:#fff;cursor:pointer;font-size:12px;font-weight:600;transition:all .15s;}
+.chip:hover,.chip.active{border-color:#e44d26;color:#e44d26;background:#fff5f3;}
+
+/* PRODUCT GRID */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;}
+.p-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer;transition:transform .2s,box-shadow .2s;}
+.p-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1);}
+.p-img{height:150px;display:flex;align-items:center;justify-content:center;font-size:52px;background:#f8f8f8;}
+.p-info{padding:12px;}
+.p-name{font-size:13px;font-weight:700;margin-bottom:3px;}
+.p-desc{font-size:11px;color:#999;margin-bottom:8px;line-height:1.5;}
+.p-row{display:flex;align-items:center;justify-content:space-between;}
+.p-price{font-size:16px;font-weight:700;color:#e44d26;}
+.p-orig{font-size:11px;color:#ccc;text-decoration:line-through;margin-left:4px;}
+.p-badge{display:inline-block;background:#f39c12;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;margin-bottom:4px;}
+
+/* PRODUCT DETAIL */
+.detail-wrap{display:grid;grid-template-columns:1fr 1fr;gap:32px;padding:28px 32px;max-width:900px;}
+.detail-img{height:280px;background:#f8f8f8;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:100px;}
+.detail-info h2{font-size:24px;font-weight:800;margin-bottom:8px;}
+.detail-price{font-size:28px;font-weight:800;color:#e44d26;margin-bottom:6px;}
+.detail-orig{font-size:14px;color:#bbb;text-decoration:line-through;margin-bottom:16px;}
+.detail-desc{font-size:14px;color:#666;line-height:1.7;margin-bottom:20px;}
+.detail-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.tag{background:#f0f0f0;color:#555;font-size:11px;padding:4px 10px;border-radius:8px;}
+.qty-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.qty-btn{width:32px;height:32px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:16px;font-weight:700;}
+.qty-val{font-size:16px;font-weight:700;width:32px;text-align:center;}
+.atc-btn{width:100%;padding:14px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;}
+.atc-btn.red{background:#e44d26;color:#fff;}
+.atc-btn.green{background:#27ae60;color:#fff;}
+.atc-btn:hover{opacity:.9;transform:translateY(-1px);}
+
+/* CART PAGE */
+.cart-wrap{display:grid;grid-template-columns:1fr 360px;gap:24px;padding:28px 32px;}
+.cart-list{}
+.cart-row{display:flex;gap:14px;background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;align-items:center;}
+.cart-emoji{font-size:40px;width:56px;text-align:center;}
+.cart-info{flex:1;}
+.cart-name{font-size:14px;font-weight:700;}
+.cart-sub{font-size:12px;color:#999;margin-top:2px;}
+.cart-price{font-size:16px;font-weight:700;color:#e44d26;}
+.cart-rm{background:none;border:none;color:#ccc;cursor:pointer;font-size:18px;padding:4px;}
+.cart-rm:hover{color:#e44d26;}
+.cart-summary{background:#fff;border-radius:12px;padding:20px;height:fit-content;position:sticky;top:70px;}
+.summary-row{display:flex;justify-content:space-between;font-size:13px;color:#666;margin-bottom:10px;}
+.summary-total{display:flex;justify-content:space-between;font-size:16px;font-weight:700;margin:14px 0;padding-top:14px;border-top:1px solid #eee;}
+.checkout-btn{width:100%;padding:14px;border-radius:12px;border:none;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;}
+.checkout-btn.red{background:#e44d26;color:#fff;}
+.checkout-btn.green{background:#27ae60;color:#fff;}
+.empty-state{text-align:center;padding:60px;color:#bbb;}
+
+/* CHECKOUT */
+.checkout-wrap{max-width:680px;padding:28px 32px;}
+.form-section{background:#fff;border-radius:12px;padding:20px;margin-bottom:16px;}
+.form-section h3{font-size:15px;font-weight:700;margin-bottom:14px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-group{display:flex;flex-direction:column;gap:4px;}
+.form-group label{font-size:11px;color:#888;font-weight:600;}
+.form-group input,.form-group select{padding:9px 12px;border:1px solid #eee;border-radius:8px;font-size:13px;outline:none;}
+.form-group input:focus,.form-group select:focus{border-color:#e44d26;}
+.full{grid-column:1/-1;}
+.place-btn{width:100%;padding:15px;background:#e44d26;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
+.place-btn:hover{background:#c0392b;}
+
+/* CONFIRMATION */
+.confirm-wrap{max-width:560px;margin:60px auto;text-align:center;padding:32px;}
+.confirm-icon{font-size:72px;margin-bottom:16px;}
+.confirm-wrap h2{font-size:26px;font-weight:800;margin-bottom:8px;}
+.confirm-wrap p{color:#666;font-size:14px;margin-bottom:24px;}
+.order-id{background:#f5f5f5;border-radius:8px;padding:10px 20px;font-size:13px;color:#888;margin-bottom:24px;}
+.back-home-btn{background:#e44d26;color:#fff;border:none;padding:12px 28px;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#222;color:#fff;padding:10px 22px;border-radius:22px;font-size:13px;font-weight:500;z-index:500;transition:transform .3s;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
 
 /* EVENT LOG */
-.event-log { position:fixed; bottom:16px; right:16px; background:#1a1a2e; width:290px; border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.35); z-index:150; }
-.log-header { background:#16213e; padding:9px 12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
-.log-header span { color:#e94560; font-size:11px; font-weight:700; }
-.log-header small { color:#aaa; font-size:10px; }
-.log-body { max-height:160px; overflow-y:auto; padding:6px; }
-.log-item { font-size:10px; color:#a8dadc; padding:3px 6px; border-left:2px solid #e94560; margin-bottom:3px; background:rgba(233,69,96,.08); border-radius:0 4px 4px 0; }
-.log-time { color:#666; }
+.elog{position:fixed;bottom:16px;right:16px;width:280px;background:#1a1a2e;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.4);z-index:200;}
+.elog-head{background:#16213e;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.elog-head span{color:#e94560;font-size:11px;font-weight:700;}
+.elog-head small{color:#888;font-size:10px;}
+.elog-body{max-height:150px;overflow-y:auto;padding:6px;}
+.elog-item{font-size:10px;color:#a8dadc;padding:3px 6px;border-left:2px solid #e94560;margin-bottom:3px;background:rgba(233,69,96,.07);border-radius:0 4px 4px 0;}
 
-footer { background:#222; color:#aaa; text-align:center; padding:20px; font-size:12px; margin-top:32px; }
+/* FF PANEL */
+.ff-panel{position:fixed;bottom:16px;left:16px;width:260px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:200;overflow:hidden;}
+.ff-head{background:#0f3460;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.ff-head span{color:#a8dadc;font-size:11px;font-weight:700;}
+.ff-head small{color:#888;font-size:10px;}
+.ff-body{padding:10px;}
+.ff-item{margin-bottom:10px;}
+.ff-label{font-size:11px;font-weight:700;color:#333;margin-bottom:4px;}
+.ff-sub{font-size:10px;color:#999;margin-bottom:6px;}
+.ff-toggle{display:flex;gap:6px;}
+.ff-btn{flex:1;padding:5px;border-radius:6px;border:1px solid #ddd;background:#f5f5f5;font-size:11px;cursor:pointer;font-weight:600;transition:all .15s;}
+.ff-btn.on{background:#27ae60;color:#fff;border-color:#27ae60;}
+.ff-btn.off{background:#e74c3c;color:#fff;border-color:#e74c3c;}
+.ff-note{font-size:9px;color:#aaa;padding:6px;border-top:1px solid #f0f0f0;margin-top:4px;line-height:1.5;}
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <div class="logo">🛍 ShopDemo</div>
-  <ul class="nav-links">
-    <li><a href="#" onclick="ph('nav_clicked',{page:'首页'})">首页</a></li>
-    <li><a href="#" onclick="ph('nav_clicked',{page:'新品'})">新品</a></li>
-    <li><a href="#" onclick="ph('nav_clicked',{page:'特卖'})">特卖</a></li>
-    <li><a href="#" onclick="ph('nav_clicked',{page:'品牌'})">品牌</a></li>
-  </ul>
+  <div class="logo" onclick="goTo('home')">🛍 ShopDemo</div>
+  <div class="nav-links">
+    <button class="nav-link" id="nav-home"    onclick="goTo('home')">Home</button>
+    <button class="nav-link" id="nav-products" onclick="goTo('products')">Products</button>
+    <button class="nav-link" id="nav-about"   onclick="goTo('about')">About</button>
+    <button class="nav-link" id="nav-contact" onclick="goTo('contact')">Contact</button>
+  </div>
   <div class="nav-right">
-    <input class="search-box" type="text" placeholder="搜索商品..." oninput="handleSearch(this.value)">
-    <button class="cart-btn" onclick="openCart()">🛒 购物车 <span class="cart-count" id="cartCount">0</span></button>
+    <button class="cart-btn" onclick="goTo('cart')">🛒 Cart <span class="cart-badge" id="cartBadge">0</span></button>
   </div>
 </nav>
 
-<!-- 模拟用户切换栏 -->
+<!-- USER BAR -->
 <div class="user-bar">
-  <span class="user-bar-label">🎭 模拟用户：</span>
-  <div id="userPills"></div>
-  <button class="new-user-btn" onclick="addRandomUser()">＋ 随机新用户</button>
+  <span class="user-bar-label">🎭 Simulated user:</span>
+  <div id="userPills" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+  <button class="add-user-btn" onclick="addUser()">＋ Random user</button>
 </div>
 
-<div class="hero">
-  <h1>🔥 春季大促 · 全场5折起</h1>
-  <p>精选全球好物，限时特惠，错过再等一年</p>
-  <button class="hero-btn" onclick="ph('hero_cta_clicked',{}); window.scrollTo({top:500,behavior:'smooth'})">立即抢购</button>
+<!-- FEATURE FLAG BANNER (controlled by FF) -->
+<div class="ff-banner promo" id="promoBanner">
+  🔥 SPRING SALE — Up to 50% off! Use code <strong>SPRING50</strong> at checkout
 </div>
 
-<div class="section">
-  <div class="categories" id="categories">
-    <button class="cat-tag active" onclick="filterCat('全部',this)">全部</button>
-    <button class="cat-tag" onclick="filterCat('数码',this)">📱 数码</button>
-    <button class="cat-tag" onclick="filterCat('服饰',this)">👕 服饰</button>
-    <button class="cat-tag" onclick="filterCat('美妆',this)">💄 美妆</button>
-    <button class="cat-tag" onclick="filterCat('家居',this)">🏠 家居</button>
-    <button class="cat-tag" onclick="filterCat('食品',this)">🍜 食品</button>
+<!-- ══════════ PAGES ══════════ -->
+
+<!-- HOME -->
+<div class="page" id="page-home">
+  <div class="hero">
+    <h1>🛍 Welcome to ShopDemo</h1>
+    <p>Discover curated products from around the world</p>
+    <button class="hero-btn" onclick="goTo('products'); ph('hero_cta_clicked',{})">Shop Now</button>
+  </div>
+  <div class="section">
+    <div class="section-title">🔥 Featured Categories</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;">
+      <div onclick="goTo('products','数码'); ph('category_clicked',{category:'Electronics'})"  style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">📱<div style="font-size:13px;font-weight:700;margin-top:8px;">Electronics</div></div>
+      <div onclick="goTo('products','服饰'); ph('category_clicked',{category:'Fashion'})"    style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">👕<div style="font-size:13px;font-weight:700;margin-top:8px;">Fashion</div></div>
+      <div onclick="goTo('products','美妆'); ph('category_clicked',{category:'Beauty'})"     style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">💄<div style="font-size:13px;font-weight:700;margin-top:8px;">Beauty</div></div>
+      <div onclick="goTo('products','家居'); ph('category_clicked',{category:'Home'})"       style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">🏠<div style="font-size:13px;font-weight:700;margin-top:8px;">Home</div></div>
+      <div onclick="goTo('products','食品'); ph('category_clicked',{category:'Food'})"       style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">🍜<div style="font-size:13px;font-weight:700;margin-top:8px;">Food</div></div>
+    </div>
+  </div>
+  <!-- Recommended section — controlled by FF -->
+  <div class="section" id="recommendedSection">
+    <div class="section-title">⭐ Recommended for You</div>
+    <div class="product-grid" id="recommendedGrid"></div>
   </div>
 </div>
 
-<div class="section" style="padding-top:0">
-  <div class="section-title">热卖商品</div>
-  <div class="products" id="productGrid"></div>
+<!-- PRODUCTS -->
+<div class="page" id="page-products">
+  <div class="breadcrumb"><span onclick="goTo('home')">Home</span> › Products</div>
+  <div class="section">
+    <div class="section-title">All Products</div>
+    <div class="cat-chips" id="catChips">
+      <div class="chip active" onclick="filterCat('All',this)">All</div>
+      <div class="chip" onclick="filterCat('数码',this)">📱 Electronics</div>
+      <div class="chip" onclick="filterCat('服饰',this)">👕 Fashion</div>
+      <div class="chip" onclick="filterCat('美妆',this)">💄 Beauty</div>
+      <div class="chip" onclick="filterCat('家居',this)">🏠 Home</div>
+      <div class="chip" onclick="filterCat('食品',this)">🍜 Food</div>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
 </div>
 
-<div class="overlay" id="overlay" onclick="closeCart()"></div>
-<div class="cart-drawer" id="cartDrawer">
-  <div class="drawer-header">
-    <h3>🛒 购物车</h3>
-    <button class="close-btn" onclick="closeCart()">✕</button>
+<!-- PRODUCT DETAIL -->
+<div class="page" id="page-detail">
+  <div class="breadcrumb">
+    <span onclick="goTo('home')">Home</span> ›
+    <span onclick="goTo('products')">Products</span> ›
+    <span id="detailBreadcrumb">Product</span>
   </div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-footer" id="cartFooter" style="display:none">
-    <div class="cart-total"><span>合计</span><span id="cartTotal">¥0</span></div>
-    <button class="checkout-btn" onclick="checkout()">立即结算</button>
+  <div class="detail-wrap">
+    <div class="detail-img" id="detailImg"></div>
+    <div class="detail-info">
+      <div id="detailBadge"></div>
+      <h2 id="detailName"></h2>
+      <div class="detail-price" id="detailPrice"></div>
+      <div class="detail-orig" id="detailOrig"></div>
+      <p class="detail-desc" id="detailDesc"></p>
+      <div class="detail-tags" id="detailTags"></div>
+      <div class="qty-row">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <span class="qty-val" id="qtyVal">1</span>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+      </div>
+      <button class="atc-btn red" id="atcBtn" onclick="addToCart()">Add to Cart 🛒</button>
+    </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="loginModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <h2>确认下单</h2>
-    <p id="modalDesc">以当前用户身份提交订单</p>
-    <div class="modal-btns">
-      <button class="btn-primary" onclick="doOrder()">确认下单 🎉</button>
-      <button class="btn-secondary" onclick="closeModal()">取消</button>
+<!-- CART -->
+<div class="page" id="page-cart">
+  <div class="breadcrumb"><span onclick="goTo('home')">Home</span> › Cart</div>
+  <div class="cart-wrap">
+    <div>
+      <div class="section-title" style="margin-bottom:14px;">Your Cart</div>
+      <div id="cartList"></div>
+    </div>
+    <div class="cart-summary" id="cartSummary"></div>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="page" id="page-checkout">
+  <div class="breadcrumb"><span onclick="goTo('home')">Home</span> › <span onclick="goTo('cart')">Cart</span> › Checkout</div>
+  <div class="checkout-wrap">
+    <div class="section-title" style="margin-bottom:16px;">Checkout</div>
+    <div class="form-section">
+      <h3>📦 Shipping Information</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>First Name</label><input id="ckFname" type="text" placeholder="John"></div>
+        <div class="form-group"><label>Last Name</label><input id="ckLname" type="text" placeholder="Doe"></div>
+        <div class="form-group full"><label>Email</label><input id="ckEmail" type="email" placeholder="john@example.com"></div>
+        <div class="form-group full"><label>Address</label><input id="ckAddr" type="text" placeholder="123 Main Street"></div>
+        <div class="form-group"><label>City</label><input id="ckCity" type="text" placeholder="New York"></div>
+        <div class="form-group"><label>Country</label>
+          <select id="ckCountry">
+            <option>United States</option><option>China</option><option>Singapore</option>
+            <option>United Kingdom</option><option>Japan</option><option>Malaysia</option>
+            <option>Australia</option><option>France</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-section">
+      <h3>💳 Payment</h3>
+      <div class="form-grid">
+        <div class="form-group full"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242"></div>
+        <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY"></div>
+        <div class="form-group"><label>CVV</label><input type="text" placeholder="123"></div>
+      </div>
+    </div>
+    <button class="place-btn" onclick="placeOrder()">Place Order →</button>
+  </div>
+</div>
+
+<!-- CONFIRMATION -->
+<div class="page" id="page-confirmation">
+  <div class="confirm-wrap">
+    <div class="confirm-icon">🎉</div>
+    <h2>Order Confirmed!</h2>
+    <p>Thank you for your purchase. Your items will be delivered soon.</p>
+    <div class="order-id" id="orderId">Order #SDP-000000</div>
+    <button class="back-home-btn" onclick="goTo('home')">Continue Shopping</button>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="breadcrumb"><span onclick="goTo('home')">Home</span> › About</div>
+  <div style="max-width:640px;padding:40px 32px;">
+    <div class="section-title">About ShopDemo</div>
+    <p style="color:#666;line-height:1.8;font-size:14px;margin-top:12px;">ShopDemo is a demo e-commerce platform built to test PostHog analytics. This site tracks user journeys across multiple pages so product managers can analyze funnels, drop-off points, and feature flag performance.</p>
+    <div style="margin-top:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);">🌍<div style="font-weight:700;margin-top:6px;">10 Regions</div><div style="font-size:12px;color:#999;">Simulated users</div></div>
+      <div style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);">📊<div style="font-weight:700;margin-top:6px;">13 Events</div><div style="font-size:12px;color:#999;">PostHog tracked</div></div>
+      <div style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);">🚩<div style="font-weight:700;margin-top:6px;">3 Feature Flags</div><div style="font-size:12px;color:#999;">Configurable</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div class="breadcrumb"><span onclick="goTo('home')">Home</span> › Contact</div>
+  <div style="max-width:500px;padding:40px 32px;">
+    <div class="section-title">Contact Us</div>
+    <div style="background:#fff;border-radius:12px;padding:24px;margin-top:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+      <div class="form-group" style="margin-bottom:12px;"><label>Name</label><input type="text" placeholder="Your name"></div>
+      <div class="form-group" style="margin-bottom:12px;"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+      <div class="form-group" style="margin-bottom:16px;"><label>Message</label><textarea rows="4" style="padding:9px 12px;border:1px solid #eee;border-radius:8px;font-size:13px;width:100%;outline:none;resize:none;" placeholder="How can we help?"></textarea></div>
+      <button onclick="ph('contact_form_submitted',{}); showToast('Message sent! ✅')" style="width:100%;padding:11px;background:#e44d26;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">Send Message</button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<div class="event-log">
-  <div class="log-header" onclick="toggleLog()">
-    <span>📊 PostHog 事件日志</span>
-    <small id="logToggle">收起 ▲</small>
-  </div>
-  <div class="log-body" id="logBody"></div>
+<!-- EVENT LOG -->
+<div class="elog">
+  <div class="elog-head" onclick="toggleElog()"><span>📊 PostHog Events</span><small id="elogToggle">▲</small></div>
+  <div class="elog-body" id="elogBody"></div>
 </div>
 
-<footer>© 2025 ShopDemo · PostHog 多用户测试演示</footer>
+<!-- FEATURE FLAG PANEL -->
+<div class="ff-panel">
+  <div class="ff-head" onclick="toggleFF()"><span>🚩 Feature Flags (local override)</span><small id="ffToggle">▲</small></div>
+  <div class="ff-body" id="ffBody">
+    <div class="ff-item">
+      <div class="ff-label">promo-banner</div>
+      <div class="ff-sub">Show promotional banner at top</div>
+      <div class="ff-toggle">
+        <button class="ff-btn on"  onclick="setFF('promo-banner',true)">ON</button>
+        <button class="ff-btn off" onclick="setFF('promo-banner',false)">OFF</button>
+      </div>
+    </div>
+    <div class="ff-item">
+      <div class="ff-label">checkout-button-color</div>
+      <div class="ff-sub">A/B test: checkout button color</div>
+      <div class="ff-toggle">
+        <button class="ff-btn" style="background:#e44d26;color:#fff;border-color:#e44d26" onclick="setFF('checkout-button-color','red')">Red</button>
+        <button class="ff-btn" style="background:#27ae60;color:#fff;border-color:#27ae60" onclick="setFF('checkout-button-color','green')">Green</button>
+      </div>
+    </div>
+    <div class="ff-item">
+      <div class="ff-label">show-recommendations</div>
+      <div class="ff-sub">Show "Recommended" section on Home</div>
+      <div class="ff-toggle">
+        <button class="ff-btn on"  onclick="setFF('show-recommendations',true)">ON</button>
+        <button class="ff-btn off" onclick="setFF('show-recommendations',false)">OFF</button>
+      </div>
+    </div>
+    <div class="ff-note">💡 These mirror the flags in your PostHog dashboard. Set them there to control all real users.</div>
+  </div>
+</div>
 
 <script>
-// ─── 随机用户数据库 ───────────────────────────────────────
-const FIRST_NAMES = ['Alice','Bob','Carlos','Diana','Emily','Frank','Grace','Henry','Iris','James','Karen','Leo','Mia','Noah','Olivia','Paul'];
-const LAST_NAMES  = ['Wang','Smith','Garcia','Kim','Chen','Patel','Müller','Rossi','Ahmed','Silva','Johnson','Tanaka'];
-const DOMAINS     = ['gmail.com','yahoo.com','outlook.com','icloud.com','hotmail.com','proton.me'];
-const REGIONS = [
-  { city:'Beijing',    country:'China',         flag:'🇨🇳', tz:'Asia/Shanghai' },
-  { city:'Shanghai',   country:'China',         flag:'🇨🇳', tz:'Asia/Shanghai' },
-  { city:'Singapore',  country:'Singapore',     flag:'🇸🇬', tz:'Asia/Singapore' },
-  { city:'New York',   country:'USA',           flag:'🇺🇸', tz:'America/New_York' },
-  { city:'London',     country:'UK',            flag:'🇬🇧', tz:'Europe/London' },
-  { city:'Tokyo',      country:'Japan',         flag:'🇯🇵', tz:'Asia/Tokyo' },
-  { city:'Sydney',     country:'Australia',     flag:'🇦🇺', tz:'Australia/Sydney' },
-  { city:'Dubai',      country:'UAE',           flag:'🇦🇪', tz:'Asia/Dubai' },
-  { city:'Paris',      country:'France',        flag:'🇫🇷', tz:'Europe/Paris' },
-  { city:'Kuala Lumpur',country:'Malaysia',     flag:'🇲🇾', tz:'Asia/Kuala_Lumpur' },
+// ══════════ USERS ══════════
+const FNAMES=['Alice','Bob','Carlos','Diana','Emily','Frank','Grace','Henry','Iris','James','Karen','Leo'];
+const LNAMES=['Wang','Smith','Garcia','Kim','Chen','Patel','Müller','Rossi','Ahmed','Silva'];
+const DOMAINS=['gmail.com','yahoo.com','outlook.com','icloud.com','hotmail.com'];
+const REGIONS=[
+  {city:'Beijing',country:'China',flag:'🇨🇳'},
+  {city:'Shanghai',country:'China',flag:'🇨🇳'},
+  {city:'Singapore',country:'Singapore',flag:'🇸🇬'},
+  {city:'New York',country:'USA',flag:'🇺🇸'},
+  {city:'London',country:'UK',flag:'🇬🇧'},
+  {city:'Tokyo',country:'Japan',flag:'🇯🇵'},
+  {city:'Sydney',country:'Australia',flag:'🇦🇺'},
+  {city:'Dubai',country:'UAE',flag:'🇦🇪'},
+  {city:'Kuala Lumpur',country:'Malaysia',flag:'🇲🇾'},
+  {city:'Paris',country:'France',flag:'🇫🇷'},
 ];
-const DEVICES  = ['desktop','mobile','tablet'];
-const BROWSERS = ['Chrome','Safari','Firefox','Edge'];
-const PLANS    = ['free','pro','enterprise'];
-const AVATARS  = ['😀','😎','🤓','🧑‍💻','👩‍💼','🧔','👩‍🎨','🧑‍🚀','👨‍🍳','🧑‍🔬'];
+const DEVICES=['desktop','mobile','tablet'];
+const PLANS=['free','pro','enterprise'];
+const EMOJIS=['😀','😎','🤓','🧑‍💻','👩‍💼','🧔','👩‍🎨','🧑‍🚀'];
+const COLORS=['#e94560','#0f3460','#533483','#2d6a4f','#e76f51','#264653','#2a9d8f'];
 
-function rand(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
-function randInt(a,b) { return Math.floor(Math.random()*(b-a+1))+a; }
-
-function generateUser() {
-  const fn = rand(FIRST_NAMES), ln = rand(LAST_NAMES);
-  const region = rand(REGIONS);
-  const domain = rand(DOMAINS);
-  const email  = `${fn.toLowerCase()}.${ln.toLowerCase()}${randInt(1,99)}@${domain}`;
-  return {
-    id: 'user_' + Math.random().toString(36).slice(2,9),
-    name: `${fn} ${ln}`,
-    email,
-    avatar: rand(AVATARS),
-    region,
-    device: rand(DEVICES),
-    browser: rand(BROWSERS),
-    plan: rand(PLANS),
-    age: randInt(18,55),
-    signupDays: randInt(1,730),
-  };
+function rnd(a){return a[Math.floor(Math.random()*a.length)];}
+function rndInt(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function mkUser(){
+  const fn=rnd(FNAMES),ln=rnd(LNAMES),r=rnd(REGIONS);
+  return {id:'u_'+Math.random().toString(36).slice(2,8),name:`${fn} ${ln}`,
+    email:`${fn.toLowerCase()}.${ln.toLowerCase()}${rndInt(1,99)}@${rnd(DOMAINS)}`,
+    emoji:rnd(EMOJIS),color:rnd(COLORS),region:r,device:rnd(DEVICES),plan:rnd(PLANS)};
 }
 
-// ─── 初始用户池（5个预置用户）────────────────────────────
-let users = Array.from({length:5}, generateUser);
-let currentUser = users[0];
-let cart = [];
-let logOpen = true;
+let users=Array.from({length:4},mkUser), currentUser=users[0], cart=[], detailProduct=null, qty=1;
 
-// ─── PostHog 安全封装 ─────────────────────────────────────
-function ph(event, props={}) {
-  try {
-    if (typeof posthog!=='undefined' && typeof posthog.capture==='function') {
-      posthog.capture(event, { ...props, simulated_user: currentUser.name });
-    }
-  } catch(e) {}
-  logEvent(event, props);
+function addUser(){const u=mkUser();users.push(u);switchUser(u);}
+function switchUser(u){
+  currentUser=u; cart=[]; updateCartBadge();
+  try{if(posthog?.reset)posthog.reset();
+    if(posthog?.identify)posthog.identify(u.email,{name:u.name,email:u.email,city:u.region.city,country:u.region.country,device_type:u.device,plan:u.plan});
+  }catch(e){}
+  renderUsers(); showToast(`Switched to ${u.emoji} ${u.name} · ${u.region.flag} ${u.region.city}`);
+  log('user_switched',{name:u.name,city:u.region.city});
 }
-
-function phIdentify(user) {
-  try {
-    if (typeof posthog!=='undefined' && typeof posthog.identify==='function') {
-      posthog.reset(); // 重置当前 session，模拟新用户
-      posthog.identify(user.email, {
-        name:          user.name,
-        email:         user.email,
-        city:          user.region.city,
-        country:       user.region.country,
-        timezone:      user.region.tz,
-        device_type:   user.device,
-        browser:       user.browser,
-        plan:          user.plan,
-        age:           user.age,
-        days_since_signup: user.signupDays,
-      });
-    }
-  } catch(e) {}
-}
-
-// ─── 切换当前用户 ─────────────────────────────────────────
-function switchUser(user) {
-  currentUser = user;
-  cart = [];
-  document.getElementById('cartCount').textContent = 0;
-  phIdentify(user);
-  renderUserPills();
-  showToast(`已切换为 ${user.avatar} ${user.name} · ${user.region.flag} ${user.region.city}`);
-  logEvent('user_switched', { name: user.name, email: user.email, city: user.region.city });
-  ph('$pageview', { page: 'home' });
-}
-
-function addRandomUser() {
-  const u = generateUser();
-  users.push(u);
-  switchUser(u);
-}
-
-// ─── 渲染用户切换栏 ───────────────────────────────────────
-function renderUserPills() {
-  const container = document.getElementById('userPills');
-  container.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;';
-  container.innerHTML = users.map(u => `
+function renderUsers(){
+  document.getElementById('userPills').innerHTML=users.map(u=>`
     <div class="user-pill ${u.id===currentUser.id?'active':''}" onclick="switchUser(users.find(x=>x.id==='${u.id}'))">
-      <div class="avatar" style="background:${strColor(u.email)}">${u.avatar}</div>
-      <div>
-        <div class="uname">${u.name} ${u.id===currentUser.id?'<span class="active-badge">当前</span>':''}</div>
-        <div class="uregion">${u.region.flag} ${u.region.city} · ${u.email.split('@')[1]}</div>
-      </div>
-    </div>
-  `).join('');
+      <div class="u-avatar" style="background:${u.color}">${u.emoji}</div>
+      <div><div class="u-name">${u.name.split(' ')[0]} ${u.id===currentUser.id?'<span class="active-tag">now</span>':''}</div>
+      <div class="u-region">${u.region.flag} ${u.region.city} · ${u.email.split('@')[1]}</div></div>
+    </div>`).join('');
 }
 
-function strColor(str) {
-  let h = 0;
-  for (let c of str) h = (h*31 + c.charCodeAt(0)) & 0xffffff;
-  const colors = ['#e94560','#0f3460','#533483','#2d6a4f','#e76f51','#264653','#2a9d8f','#e9c46a'];
-  return colors[h % colors.length];
+// ══════════ ROUTING ══════════
+const PAGES=['home','products','detail','cart','checkout','confirmation','about','contact'];
+let currentPage='home';
+
+function goTo(page, cat){
+  PAGES.forEach(p=>{
+    const el=document.getElementById('page-'+p);
+    if(el) el.classList.toggle('active', p===page);
+  });
+  PAGES.forEach(p=>{
+    const n=document.getElementById('nav-'+p);
+    if(n) n.classList.toggle('active', p===page);
+  });
+  currentPage=page;
+
+  // fire $pageview with pathname
+  const pathMap={home:'/',products:'/products',detail:'/product/'+( detailProduct?.id||''),cart:'/cart',checkout:'/checkout',confirmation:'/confirmation',about:'/about',contact:'/contact'};
+  ph('$pageview',{$current_url: window.location.origin + (pathMap[page]||'/'+page), page_name: page});
+
+  if(page==='products'){renderProducts(cat||'All'); if(cat) setActiveChip(cat);}
+  if(page==='cart') renderCart();
+  if(page==='home') renderRecommended();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ─── 商品数据 ─────────────────────────────────────────────
-const ALL_PRODUCTS = [
-  {id:1,name:'AirPods Pro',emoji:'🎧',cat:'数码',price:1299,orig:1799,desc:'主动降噪，沉浸音效体验',badge:'热销'},
-  {id:2,name:'机械键盘 K2',emoji:'⌨️',cat:'数码',price:399,orig:599,desc:'Cherry MX红轴，RGB背光',badge:''},
-  {id:3,name:'4K 便携显示器',emoji:'🖥️',cat:'数码',price:1099,orig:1399,desc:'15.6英寸，USB-C直连',badge:'新品'},
-  {id:4,name:'纯棉T恤 经典款',emoji:'👕',cat:'服饰',price:89,orig:149,desc:'100%有机棉，多色可选',badge:''},
-  {id:5,name:'牛仔外套 复古',emoji:'🧥',cat:'服饰',price:299,orig:499,desc:'水洗工艺，版型宽松',badge:'限量'},
-  {id:6,name:'精华液 Pro版',emoji:'💆',cat:'美妆',price:259,orig:359,desc:'烟酰胺+玻尿酸双效',badge:'爆款'},
-  {id:7,name:'香氛蜡烛套装',emoji:'🕯️',cat:'家居',price:128,orig:198,desc:'天然大豆蜡，持香60h',badge:''},
-  {id:8,name:'网红螺蛳粉',emoji:'🍜',cat:'食品',price:38,orig:58,desc:'正宗柳州配方，臭香鲜辣',badge:'必买'},
+// ══════════ PRODUCTS DATA ══════════
+const PRODUCTS=[
+  {id:1,name:'AirPods Pro',emoji:'🎧',cat:'数码',price:1299,orig:1799,desc:'Active noise cancellation with immersive sound experience. Up to 6hrs battery.',badge:'Hot',tags:['Audio','Wireless','Apple']},
+  {id:2,name:'Mechanical Keyboard K2',emoji:'⌨️',cat:'数码',price:399,orig:599,desc:'Cherry MX Red switches, RGB backlit, compact 75% layout.',badge:'',tags:['Keyboard','RGB','Desk']},
+  {id:3,name:'4K Portable Monitor',emoji:'🖥️',cat:'数码',price:1099,orig:1399,desc:'15.6" IPS panel, USB-C single-cable connection.',badge:'New',tags:['Display','4K','USB-C']},
+  {id:4,name:'Classic Cotton Tee',emoji:'👕',cat:'服饰',price:89,orig:149,desc:'100% organic cotton, available in 8 colors.',badge:'',tags:['Cotton','Casual','Unisex']},
+  {id:5,name:'Vintage Denim Jacket',emoji:'🧥',cat:'服饰',price:299,orig:499,desc:'Washed finish, relaxed fit, oversized silhouette.',badge:'Limited',tags:['Denim','Vintage','Outerwear']},
+  {id:6,name:'Pro Serum',emoji:'💆',cat:'美妆',price:259,orig:359,desc:'Dual-action niacinamide + hyaluronic acid formula.',badge:'Bestseller',tags:['Skincare','Serum','Anti-aging']},
+  {id:7,name:'Scented Candle Set',emoji:'🕯️',cat:'家居',price:128,orig:198,desc:'Natural soy wax, 60hrs burn time, 3 scents included.',badge:'',tags:['Home','Fragrance','Gift']},
+  {id:8,name:'Luosifen Noodles',emoji:'🍜',cat:'食品',price:38,orig:58,desc:'Authentic Liuzhou recipe. Bold, spicy, and unforgettable.',badge:'Must-try',tags:['Food','Spicy','Instant']},
 ];
 
-function renderProducts(list) {
-  document.getElementById('productGrid').innerHTML = list.map(p => `
-    <div class="product-card" onclick="ph('product_viewed',{product_id:${p.id},product_name:'${p.name}',price:${p.price},category:'${p.cat}'})">
-      <div class="product-img">${p.emoji}</div>
-      <div class="product-info">
-        ${p.badge?`<div class="badge">${p.badge}</div>`:''}
-        <div class="product-name">${p.name}</div>
-        <div class="product-desc">${p.desc}</div>
-        <div class="product-footer">
-          <div><span class="price">¥${p.price}</span><span class="orig-price">¥${p.orig}</span></div>
-          <button class="add-btn" onclick="event.stopPropagation();addToCart(${p.id})">加购</button>
-        </div>
-      </div>
+function renderProducts(cat){
+  const list = cat==='All' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===cat);
+  document.getElementById('productGrid').innerHTML=list.map(p=>pCard(p)).join('');
+}
+function renderRecommended(){
+  const list=PRODUCTS.slice().sort(()=>Math.random()-.5).slice(0,4);
+  document.getElementById('recommendedGrid').innerHTML=list.map(p=>pCard(p)).join('');
+}
+function pCard(p){return`
+  <div class="p-card" onclick="openDetail(${p.id})">
+    <div class="p-img">${p.emoji}</div>
+    <div class="p-info">
+      ${p.badge?`<div class="p-badge">${p.badge}</div>`:''}
+      <div class="p-name">${p.name}</div>
+      <div class="p-desc">${p.desc}</div>
+      <div class="p-row"><div><span class="p-price">¥${p.price}</span><span class="p-orig">¥${p.orig}</span></div></div>
     </div>
-  `).join('');
-}
-renderProducts(ALL_PRODUCTS);
+  </div>`;}
 
-function filterCat(cat, el) {
-  document.querySelectorAll('.cat-tag').forEach(t=>t.classList.remove('active'));
+function setActiveChip(cat){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c.textContent.includes(cat)||(cat==='All'&&c.textContent==='All')));
+}
+function filterCat(cat,el){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
-  const list = cat==='全部' ? ALL_PRODUCTS : ALL_PRODUCTS.filter(p=>p.cat===cat);
-  renderProducts(list);
-  ph('category_filter', {category:cat, result_count:list.length});
+  renderProducts(cat);
+  ph('category_filter',{category:cat});
 }
 
-let searchTimer;
-function handleSearch(val) {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(()=>{
-    const list = val ? ALL_PRODUCTS.filter(p=>p.name.includes(val)||p.desc.includes(val)) : ALL_PRODUCTS;
-    renderProducts(list);
-    if(val) ph('search', {query:val, result_count:list.length});
-  }, 600);
+function openDetail(id){
+  detailProduct=PRODUCTS.find(p=>p.id===id); qty=1;
+  document.getElementById('detailImg').textContent=detailProduct.emoji;
+  document.getElementById('detailBreadcrumb').textContent=detailProduct.name;
+  document.getElementById('detailName').textContent=detailProduct.name;
+  document.getElementById('detailPrice').textContent='¥'+detailProduct.price;
+  document.getElementById('detailOrig').textContent='Original: ¥'+detailProduct.orig;
+  document.getElementById('detailDesc').textContent=detailProduct.desc;
+  document.getElementById('detailBadge').innerHTML=detailProduct.badge?`<div class="p-badge" style="margin-bottom:8px">${detailProduct.badge}</div>`:'';
+  document.getElementById('detailTags').innerHTML=detailProduct.tags.map(t=>`<span class="tag">${t}</span>`).join('');
+  document.getElementById('qtyVal').textContent=1;
+  applyButtonColor();
+  ph('product_viewed',{product_id:id,product_name:detailProduct.name,price:detailProduct.price,category:detailProduct.cat});
+  goTo('detail');
 }
+function changeQty(d){qty=Math.max(1,qty+d);document.getElementById('qtyVal').textContent=qty;}
+function addToCart(){
+  if(!detailProduct)return;
+  for(let i=0;i<qty;i++) cart.push({...detailProduct});
+  updateCartBadge();
+  ph('add_to_cart',{product_id:detailProduct.id,product_name:detailProduct.name,price:detailProduct.price,qty});
+  showToast(`✅ ${detailProduct.name} added to cart`);
+  goTo('cart');
+}
+function updateCartBadge(){document.getElementById('cartBadge').textContent=cart.length;}
 
-function addToCart(id) {
-  const p = ALL_PRODUCTS.find(x=>x.id===id);
-  cart.push(p);
-  document.getElementById('cartCount').textContent = cart.length;
-  showToast(`✅ ${p.name} 已加入购物车`);
-  ph('add_to_cart', {product_id:id, product_name:p.name, price:p.price, cart_size:cart.length});
-}
-
-function openCart() {
-  renderCart();
-  document.getElementById('cartDrawer').classList.add('open');
-  document.getElementById('overlay').classList.add('show');
-  ph('cart_opened', {cart_size:cart.length});
-}
-function closeCart() {
-  document.getElementById('cartDrawer').classList.remove('open');
-  document.getElementById('overlay').classList.remove('show');
-}
-function renderCart() {
-  const el = document.getElementById('cartItems'), ft = document.getElementById('cartFooter');
-  if(!cart.length) { el.innerHTML='<div class="empty-cart">🛒<br>购物车空空如也</div>'; ft.style.display='none'; return; }
-  el.innerHTML = cart.map((p,i)=>`
-    <div class="cart-item">
-      <div class="cart-item-emoji">${p.emoji}</div>
-      <div class="cart-item-info"><div class="cart-item-name">${p.name}</div><div class="cart-item-price">¥${p.price}</div></div>
-      <button class="cart-item-remove" onclick="removeCart(${i})">✕</button>
+// ══════════ CART ══════════
+function renderCart(){
+  const list=document.getElementById('cartList'), sum=document.getElementById('cartSummary');
+  if(!cart.length){list.innerHTML='<div class="empty-state">🛒<br><br>Your cart is empty<br><small style="font-size:13px;color:#ccc">Browse products to add items</small></div>';sum.innerHTML='';return;}
+  list.innerHTML=cart.map((p,i)=>`
+    <div class="cart-row">
+      <div class="cart-emoji">${p.emoji}</div>
+      <div class="cart-info"><div class="cart-name">${p.name}</div><div class="cart-sub">${p.cat}</div></div>
+      <div class="cart-price">¥${p.price}</div>
+      <button class="cart-rm" onclick="removeCart(${i})">✕</button>
     </div>`).join('');
-  document.getElementById('cartTotal').textContent = '¥'+cart.reduce((s,p)=>s+p.price,0);
-  ft.style.display='block';
+  const total=cart.reduce((s,p)=>s+p.price,0);
+  const btnClass=FLAGS['checkout-button-color']==='green'?'green':'red';
+  sum.innerHTML=`
+    <div style="font-size:15px;font-weight:700;margin-bottom:14px;">Order Summary</div>
+    <div class="summary-row"><span>Subtotal (${cart.length} items)</span><span>¥${total}</span></div>
+    <div class="summary-row"><span>Shipping</span><span style="color:#27ae60">Free</span></div>
+    <div class="summary-total"><span>Total</span><span style="color:#e44d26">¥${total}</span></div>
+    <button class="checkout-btn ${btnClass}" onclick="goToCheckout()">Proceed to Checkout →</button>
+    <div style="font-size:10px;color:#bbb;margin-top:8px;text-align:center;">🚩 Button color controlled by <b>checkout-button-color</b> flag</div>`;
 }
-function removeCart(i) {
-  const p=cart[i]; cart.splice(i,1);
-  document.getElementById('cartCount').textContent=cart.length;
+function removeCart(i){
+  ph('remove_from_cart',{product_name:cart[i].name});
+  cart.splice(i,1); updateCartBadge(); renderCart();
+}
+function goToCheckout(){
+  ph('checkout_initiated',{total:cart.reduce((s,p)=>s+p.price,0),item_count:cart.length});
+  // pre-fill with current user info
+  document.getElementById('ckFname').value=currentUser.name.split(' ')[0];
+  document.getElementById('ckLname').value=currentUser.name.split(' ')[1]||'';
+  document.getElementById('ckEmail').value=currentUser.email;
+  document.getElementById('ckCity').value=currentUser.region.city;
+  goTo('checkout');
+}
+function placeOrder(){
+  const total=cart.reduce((s,p)=>s+p.price,0);
+  const orderId='SDP-'+Math.random().toString(36).slice(2,8).toUpperCase();
+  ph('order_completed',{order_id:orderId,total_amount:total,item_count:cart.length,items:cart.map(p=>p.name),user_country:currentUser.region.country,user_plan:currentUser.plan});
+  document.getElementById('orderId').textContent='Order #'+orderId;
+  cart=[]; updateCartBadge();
+  goTo('confirmation');
+}
+
+// ══════════ FEATURE FLAGS ══════════
+const FLAGS={'promo-banner':true,'checkout-button-color':'red','show-recommendations':true};
+
+function setFF(key,val){
+  FLAGS[key]=val;
+  ph('feature_flag_overridden',{flag:key,value:val,user:currentUser.email});
+  applyFlags();
+  showToast(`🚩 Flag "${key}" set to: ${val}`);
+  // Also call PostHog to log the flag exposure
+  try{if(posthog?.capture) posthog.capture('$feature_flag_called',{$feature_flag:key,$feature_flag_response:val});}catch(e){}
+}
+function applyFlags(){
+  // promo-banner
+  document.getElementById('promoBanner').style.display = FLAGS['promo-banner'] ? 'block' : 'none';
+  // show-recommendations
+  document.getElementById('recommendedSection').style.display = FLAGS['show-recommendations'] ? 'block' : 'none';
+  // checkout-button-color — applied when cart renders
+  applyButtonColor();
   renderCart();
-  ph('remove_from_cart',{product_id:p.id,product_name:p.name});
+}
+function applyButtonColor(){
+  const btn=document.getElementById('atcBtn');
+  if(!btn)return;
+  const isGreen=FLAGS['checkout-button-color']==='green';
+  btn.className='atc-btn '+(isGreen?'green':'red');
+}
+// Load from PostHog on start
+function loadPHFlags(){
+  try{
+    if(typeof posthog==='undefined')return;
+    posthog.onFeatureFlags(()=>{
+      const promo=posthog.isFeatureEnabled('promo-banner');
+      const rec=posthog.isFeatureEnabled('show-recommendations');
+      const color=posthog.getFeatureFlag('checkout-button-color');
+      if(promo!==undefined) FLAGS['promo-banner']=promo;
+      if(rec!==undefined) FLAGS['show-recommendations']=rec;
+      if(color) FLAGS['checkout-button-color']=color;
+      applyFlags();
+      log('feature_flags_loaded',{'promo-banner':FLAGS['promo-banner'],'btn-color':FLAGS['checkout-button-color'],'recs':FLAGS['show-recommendations']});
+    });
+  }catch(e){}
 }
 
-function checkout() {
-  const total = cart.reduce((s,p)=>s+p.price,0);
-  document.getElementById('modalDesc').textContent =
-    `${currentUser.avatar} ${currentUser.name} (${currentUser.email}) · ¥${total} · ${cart.length} 件商品`;
-  ph('checkout_initiated',{total_amount:total,item_count:cart.length,items:cart.map(p=>p.name)});
-  closeCart();
-  document.getElementById('loginModal').classList.add('show');
+// ══════════ UTILS ══════════
+function ph(event, props={}){
+  try{if(posthog?.capture) posthog.capture(event,{...props,simulated_user:currentUser?.name});}catch(e){}
+  log(event,props);
 }
-function closeModal() { document.getElementById('loginModal').classList.remove('show'); }
-function doOrder() {
-  const total = cart.reduce((s,p)=>s+p.price,0);
-  ph('order_completed',{
-    total_amount: total, item_count: cart.length,
-    items: cart.map(p=>p.name),
-    user_email: currentUser.email,
-    user_city: currentUser.region.city,
-    user_country: currentUser.region.country,
-    user_plan: currentUser.plan,
-    user_device: currentUser.device,
-  });
-  cart=[]; document.getElementById('cartCount').textContent=0;
-  closeModal();
-  showToast(`🎉 ${currentUser.name} 订单提交成功！共 ¥${total}`);
+function log(name,props){
+  const b=document.getElementById('elogBody');
+  const t=new Date().toLocaleTimeString('en',{hour12:false});
+  const ps=Object.entries(props||{}).slice(0,2).map(([k,v])=>`${k}:${JSON.stringify(v)}`).join(' ');
+  const el=document.createElement('div'); el.className='elog-item';
+  el.innerHTML=`<span style="color:#555">${t}</span> <strong style="color:#e94560">${name}</strong>${ps?'<br><small>'+ps+'</small>':''}`;
+  b.prepend(el);
 }
+function showToast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg;
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600);
+}
+let elogOpen=true, ffOpen=true;
+function toggleElog(){elogOpen=!elogOpen;document.getElementById('elogBody').style.display=elogOpen?'block':'none';document.getElementById('elogToggle').textContent=elogOpen?'▲':'▼';}
+function toggleFF(){ffOpen=!ffOpen;document.getElementById('ffBody').style.display=ffOpen?'block':'none';document.getElementById('ffToggle').textContent=ffOpen?'▲':'▼';}
 
-// ─── 工具 ─────────────────────────────────────────────────
-function showToast(msg) {
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
-}
-function logEvent(name,props) {
-  const body=document.getElementById('logBody');
-  const time=new Date().toLocaleTimeString('zh-CN',{hour12:false});
-  const ps=Object.entries(props||{}).slice(0,3).map(([k,v])=>`${k}:${JSON.stringify(v)}`).join(' ');
-  const el=document.createElement('div'); el.className='log-item';
-  el.innerHTML=`<span class="log-time">${time}</span> <strong style="color:#e94560">${name}</strong>${ps?'<br><small>'+ps+'</small>':''}`;
-  body.prepend(el);
-}
-function toggleLog() {
-  const b=document.getElementById('logBody'), t=document.getElementById('logToggle');
-  logOpen=!logOpen; b.style.display=logOpen?'block':'none';
-  t.textContent=logOpen?'收起 ▲':'展开 ▼';
-}
-
-// ─── 初始化 ───────────────────────────────────────────────
-renderUserPills();
-phIdentify(currentUser); // 以第一个用户身份识别
-ph('$pageview',{page:'home'});
+// ══════════ INIT ══════════
+renderUsers();
+try{if(posthog?.identify) posthog.identify(currentUser.email,{name:currentUser.name,email:currentUser.email,city:currentUser.region.city,country:currentUser.region.country});}catch(e){}
+applyFlags();
+goTo('home');
+loadPHFlags();
 </script>
 </body>
 </html>
