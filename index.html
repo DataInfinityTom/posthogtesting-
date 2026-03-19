@@ -387,6 +387,7 @@ function applyFlags(){
   // promo-banner
   const banner = document.getElementById('promoBanner');
   if(FLAGS['promo-banner']){
+    banner.style.display = '';
     banner.classList.add('promo');
   } else {
     banner.classList.remove('promo');
