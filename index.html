@@ -738,7 +738,7 @@ const SCENARIOS = [
 async function runSimulationBatch() {
   if (isSimulating) return;
   isSimulating = true;
-  const batchSize = 10; // Number of unique users to simulate per click
+  const batchSize = 100; // Number of unique users to simulate per click
   
   updateSimUI(`🚀 Starting batch of ${batchSize} users...`);
 
