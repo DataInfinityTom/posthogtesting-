@@ -708,7 +708,7 @@ const SCENARIOS = [
         goTo('products'); await simWait(1000);
         openDetail(rnd(PRODUCTS).id); await simWait(1500);
         addToCart(); await simWait(1000);
-        updateSimLog("User abandoned cart. Cold feet!");
+        updateSimUI("User abandoned cart. Cold feet!");
     }
   },
   {
