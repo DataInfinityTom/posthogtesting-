@@ -765,7 +765,7 @@ async function runSimulationBatch() {
     await selected.run();
     
     // 3. Cool-down between users to let PostHog capture session data
-    await simWait(1500);
+    await simWait(900);
   }
 
   if (isSimulating) {
