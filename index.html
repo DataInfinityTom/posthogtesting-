@@ -692,7 +692,7 @@ function stopSimulation() {
 const SCENARIOS = [
   {
     name: "Happy Path (Converter)",
-    weight: 0.5, // 50% chance
+    weight: 0.8, // 80% chance
     run: async () => {
       goTo('products'); await simWait(1000);
       openDetail(rnd(PRODUCTS).id); await simWait(1200);
@@ -703,18 +703,17 @@ const SCENARIOS = [
   },
   {
     name: "Cart Abandoner (Drop-off at Cart)",
-    weight: 0.2, // 20% of users
+    weight: 0.05, // 5% of users
     run: async () => {
-        goTo('products'); await wait(1000);
-        openDetail(rnd(PRODUCTS).id); await wait(1500);
-        addToCart(); await wait(1000);
-        goTo('cart'); await wait(2000);
+        goTo('products'); await simWait(1000);
+        openDetail(rnd(PRODUCTS).id); await simWait(1500);
+        addToCart(); await simWait(1000);
         updateSimLog("User abandoned cart. Cold feet!");
     }
   },
   {
     name: "Checkout Abandoner (Initiated but no order)",
-    weight: 0.15, // 15% chance 
+    weight: 0.05, // 5% chance 
     run: async () => {
       goTo('products'); await simWait(1000);
       openDetail(rnd(PRODUCTS).id); await simWait(1200);
@@ -726,7 +725,7 @@ const SCENARIOS = [
   },
   {
     name: "Window Shopper (Bounce)",
-    weight: 0.15, // 15% chance
+    weight: 0.1, // 10% chance
     run: async () => {
       goTo('products'); await simWait(800);
       openDetail(rnd(PRODUCTS).id); await simWait(1500);
