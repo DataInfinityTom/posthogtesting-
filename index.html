@@ -694,10 +694,10 @@ const SCENARIOS = [
     name: "Happy Path (Converter)",
     weight: 0.8, // 80% chance
     run: async () => {
-      goTo('products'); await simWait(1000);
-      openDetail(rnd(PRODUCTS).id); await simWait(1200);
-      addToCart(); await simWait(1000);
-      goToCheckout(); await simWait(1500);
+      goTo('products'); await simWait(800);
+      openDetail(rnd(PRODUCTS).id); await simWait(800);
+      addToCart(); await simWait(800);
+      goToCheckout(); await simWait(800);
       placeOrder();
     }
   },
@@ -705,9 +705,9 @@ const SCENARIOS = [
     name: "Cart Abandoner (Drop-off at Cart)",
     weight: 0.05, // 5% of users
     run: async () => {
-        goTo('products'); await simWait(1000);
-        openDetail(rnd(PRODUCTS).id); await simWait(1500);
-        addToCart(); await simWait(1000);
+        goTo('products'); await simWait(800);
+        openDetail(rnd(PRODUCTS).id); await simWait(800);
+        addToCart(); await simWait(800);
         updateSimUI("User abandoned cart. Cold feet!");
     }
   },
@@ -715,10 +715,10 @@ const SCENARIOS = [
     name: "Checkout Abandoner (Initiated but no order)",
     weight: 0.05, // 5% chance 
     run: async () => {
-      goTo('products'); await simWait(1000);
-      openDetail(rnd(PRODUCTS).id); await simWait(1200);
-      addToCart(); await simWait(1000);
-      goToCheckout(); await simWait(2000);
+      goTo('products'); await simWait(500);
+      openDetail(rnd(PRODUCTS).id); await simWait(500);
+      addToCart(); await simWait(500);
+      goToCheckout(); await simWait(800);
       updateSimUI("User got distracted at checkout and left.");
       // Note: We do NOT call placeOrder() here.
     }
@@ -728,8 +728,8 @@ const SCENARIOS = [
     weight: 0.1, // 10% chance
     run: async () => {
       goTo('products'); await simWait(800);
-      openDetail(rnd(PRODUCTS).id); await simWait(1500);
-      goTo('about'); await simWait(1000);
+      openDetail(rnd(PRODUCTS).id); await simWait(500);
+      goTo('about'); await simWait(100);
       updateSimUI("User left after browsing.");
     }
   }
@@ -765,7 +765,7 @@ async function runSimulationBatch() {
     await selected.run();
     
     // 3. Cool-down between users to let PostHog capture session data
-    await simWait(3000);
+    await simWait(1500);
   }
 
   if (isSimulating) {
