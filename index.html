@@ -154,10 +154,38 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
 .elog-head small{color:#888;font-size:10px;}
 .elog-body{max-height:150px;overflow-y:auto;padding:6px;}
 .elog-item{font-size:10px;color:#a8dadc;padding:3px 6px;border-left:2px solid #e94560;margin-bottom:3px;background:rgba(233,69,96,.07);border-radius:0 4px 4px 0;}
+
+/* --- SIMULATION CONTROL PANEL --- */
+#sim-panel {
+  position: fixed; top: 70px; right: 20px; width: 300px;
+  background: #1a1a2e; color: #fff; border: 2px solid #e94560;
+  border-radius: 12px; z-index: 9999; padding: 15px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5); font-family: sans-serif;
+}
+.sim-title { font-weight: 800; font-size: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; color: #e94560; }
+.sim-controls { display: flex; gap: 8px; margin-bottom: 12px; }
+.sim-btn { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+#btn-start { background: #27ae60; color: white; }
+#btn-stop { background: #c0392b; color: white; }
+.sim-progress-bg { background: #333; height: 8px; border-radius: 4px; margin-bottom: 10px; overflow: hidden; }
+#sim-progress-bar { background: #e94560; width: 0%; height: 100%; transition: width 0.3s; }
+#sim-log { background: #0f3460; height: 120px; overflow-y: auto; font-size: 10px; padding: 8px; border-radius: 6px; border: 1px solid #16213e; line-height: 1.4; }
+.sim-log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
 </style>
 </head>
 <body>
-
+<!-- Simulation Panel -->
+<div id="sim-panel">
+  <div class="sim-title">🤖 AUTO-PILOT ENGINE <span>v1.0</span></div>
+  <div class="sim-controls">
+    <button id="btn-start" class="sim-btn" onclick="runSimulationBatch()">START</button>
+    <button id="btn-stop" class="sim-btn" onclick="stopSimulation()">STOP</button>
+  </div>
+  <div class="sim-progress-bg"><div id="sim-progress-bar"></div></div>
+  <div id="sim-current-task" style="font-size: 11px; margin-bottom: 8px; color: #888;">Standby...</div>
+  <div id="sim-log"></div>
+</div>
+  
 <!-- NAV -->
 <nav>
   <div class="logo" onclick="goTo('home')">🛍 ShopDemo</div>
@@ -635,6 +663,118 @@ try{
 applyFlags();
 goTo('home');
 loadPHFlags();
+
+// Simulation Panel Logic
+let isSimulating = false;
+const simWait = (ms) => new Promise(res => setTimeout(res, ms));
+
+function updateSimUI(msg, progress = null) {
+  const log = document.getElementById('sim-log');
+  const task = document.getElementById('sim-current-task');
+  const bar = document.getElementById('sim-progress-bar');
+  
+  if (msg) {
+    const entry = document.createElement('div');
+    entry.className = 'sim-log-entry';
+    entry.innerHTML = `<span style="color:#e94560">[${new Date().toLocaleTimeString([], {hour12:false})}]</span> ${msg}`;
+    log.prepend(entry);
+    task.innerText = msg;
+  }
+  if (progress !== null) bar.style.width = progress + '%';
+}
+
+function stopSimulation() {
+  isSimulating = false;
+  updateSimUI("🛑 Simulation Terminated.");
+}
+
+// ══════════ THE SCENARIOS ══════════
+const SCENARIOS = [
+  {
+    name: "Happy Path (Converter)",
+    weight: 0.5, // 50% chance
+    run: async () => {
+      goTo('products'); await simWait(1000);
+      openDetail(rnd(PRODUCTS).id); await simWait(1200);
+      addToCart(); await simWait(1000);
+      goToCheckout(); await simWait(1500);
+      placeOrder();
+    }
+  },
+  {
+    name: "Cart Abandoner (Drop-off at Cart)",
+    weight: 0.2, // 20% of users
+    run: async () => {
+        goTo('products'); await wait(1000);
+        openDetail(rnd(PRODUCTS).id); await wait(1500);
+        addToCart(); await wait(1000);
+        goTo('cart'); await wait(2000);
+        updateSimLog("User abandoned cart. Cold feet!");
+    }
+  },
+  {
+    name: "Checkout Abandoner (Initiated but no order)",
+    weight: 0.15, // 15% chance 
+    run: async () => {
+      goTo('products'); await simWait(1000);
+      openDetail(rnd(PRODUCTS).id); await simWait(1200);
+      addToCart(); await simWait(1000);
+      goToCheckout(); await simWait(2000);
+      updateSimUI("User got distracted at checkout and left.");
+      // Note: We do NOT call placeOrder() here.
+    }
+  },
+  {
+    name: "Window Shopper (Bounce)",
+    weight: 0.15, // 15% chance
+    run: async () => {
+      goTo('products'); await simWait(800);
+      openDetail(rnd(PRODUCTS).id); await simWait(1500);
+      goTo('about'); await simWait(1000);
+      updateSimUI("User left after browsing.");
+    }
+  }
+];
+
+async function runSimulationBatch() {
+  if (isSimulating) return;
+  isSimulating = true;
+  const batchSize = 10; // Number of unique users to simulate per click
+  
+  updateSimUI(`🚀 Starting batch of ${batchSize} users...`);
+
+  for (let i = 0; i < batchSize; i++) {
+    if (!isSimulating) break;
+
+    // 1. Generate & Switch to a completely new user identity
+    const u = mkUser();
+    switchUser(u); // This resets PostHog and identifies the new user
+    
+    const progress = ((i + 1) / batchSize) * 100;
+    updateSimUI(`👤 User ${i+1}: ${u.name} (${u.region.country})`, progress);
+
+    // 2. Pick a scenario based on weighted probability
+    const roll = Math.random();
+    let selected = SCENARIOS[0];
+    let cumulative = 0;
+    for (const s of SCENARIOS) {
+      cumulative += s.weight;
+      if (roll < cumulative) { selected = s; break; }
+    }
+
+    updateSimUI(`🎭 Scenario: ${selected.name}`);
+    await selected.run();
+    
+    // 3. Cool-down between users to let PostHog capture session data
+    await simWait(3000);
+  }
+
+  if (isSimulating) {
+    isSimulating = false;
+    updateSimUI("✅ Batch Complete. Metrics should update in PostHog shortly.");
+  }
+}
+
 </script>
 </body>
 </html>
