@@ -154,21 +154,6 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
 .elog-head small{color:#888;font-size:10px;}
 .elog-body{max-height:150px;overflow-y:auto;padding:6px;}
 .elog-item{font-size:10px;color:#a8dadc;padding:3px 6px;border-left:2px solid #e94560;margin-bottom:3px;background:rgba(233,69,96,.07);border-radius:0 4px 4px 0;}
-
-/* FF PANEL */
-.ff-panel{position:fixed;bottom:16px;left:16px;width:260px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:200;overflow:hidden;}
-.ff-head{background:#0f3460;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
-.ff-head span{color:#a8dadc;font-size:11px;font-weight:700;}
-.ff-head small{color:#888;font-size:10px;}
-.ff-body{padding:10px;}
-.ff-item{margin-bottom:10px;}
-.ff-label{font-size:11px;font-weight:700;color:#333;margin-bottom:4px;}
-.ff-sub{font-size:10px;color:#999;margin-bottom:6px;}
-.ff-toggle{display:flex;gap:6px;}
-.ff-btn{flex:1;padding:5px;border-radius:6px;border:1px solid #ddd;background:#f5f5f5;font-size:11px;cursor:pointer;font-weight:600;transition:all .15s;}
-.ff-btn.on{background:#27ae60;color:#fff;border-color:#27ae60;}
-.ff-btn.off{background:#e74c3c;color:#fff;border-color:#e74c3c;}
-.ff-note{font-size:9px;color:#aaa;padding:6px;border-top:1px solid #f0f0f0;margin-top:4px;line-height:1.5;}
 </style>
 </head>
 <body>
@@ -194,7 +179,7 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
   <button class="add-user-btn" onclick="addUser()">＋ Random user</button>
 </div>
 
-<!-- FEATURE FLAG BANNER (controlled by FF) -->
+<!-- FEATURE FLAG BANNER (controlled by PostHog promo-banner flag) -->
 <div class="ff-banner promo" id="promoBanner">
   🔥 SPRING SALE — Up to 50% off! Use code <strong>SPRING50</strong> at checkout
 </div>
@@ -218,7 +203,7 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
       <div onclick="goTo('products','食品'); ph('category_clicked',{category:'Food'})"       style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">🍜<div style="font-size:13px;font-weight:700;margin-top:8px;">Food</div></div>
     </div>
   </div>
-  <!-- Recommended section — controlled by FF -->
+  <!-- Recommended section — controlled by PostHog show-recommendations flag -->
   <div class="section" id="recommendedSection">
     <div class="section-title">⭐ Recommended for You</div>
     <div class="product-grid" id="recommendedGrid"></div>
@@ -334,7 +319,7 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
     <div style="margin-top:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
       <div style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);">🌍<div style="font-weight:700;margin-top:6px;">10 Regions</div><div style="font-size:12px;color:#999;">Simulated users</div></div>
       <div style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);">📊<div style="font-weight:700;margin-top:6px;">13 Events</div><div style="font-size:12px;color:#999;">PostHog tracked</div></div>
-      <div style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);">🚩<div style="font-weight:700;margin-top:6px;">3 Feature Flags</div><div style="font-size:12px;color:#999;">Configurable</div></div>
+      <div style="background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);">🚩<div style="font-weight:700;margin-top:6px;">3 Feature Flags</div><div style="font-size:12px;color:#999;">Via PostHog</div></div>
     </div>
   </div>
 </div>
@@ -359,38 +344,6 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
 <div class="elog">
   <div class="elog-head" onclick="toggleElog()"><span>📊 PostHog Events</span><small id="elogToggle">▲</small></div>
   <div class="elog-body" id="elogBody"></div>
-</div>
-
-<!-- FEATURE FLAG PANEL -->
-<div class="ff-panel">
-  <div class="ff-head" onclick="toggleFF()"><span>🚩 Feature Flags (local override)</span><small id="ffToggle">▲</small></div>
-  <div class="ff-body" id="ffBody">
-    <div class="ff-item">
-      <div class="ff-label">promo-banner</div>
-      <div class="ff-sub">Show promotional banner at top</div>
-      <div class="ff-toggle">
-        <button class="ff-btn on"  onclick="setFF('promo-banner',true)">ON</button>
-        <button class="ff-btn off" onclick="setFF('promo-banner',false)">OFF</button>
-      </div>
-    </div>
-    <div class="ff-item">
-      <div class="ff-label">checkout-button-color</div>
-      <div class="ff-sub">A/B test: checkout button color</div>
-      <div class="ff-toggle">
-        <button class="ff-btn" style="background:#e44d26;color:#fff;border-color:#e44d26" onclick="setFF('checkout-button-color','red')">Red</button>
-        <button class="ff-btn" style="background:#27ae60;color:#fff;border-color:#27ae60" onclick="setFF('checkout-button-color','green')">Green</button>
-      </div>
-    </div>
-    <div class="ff-item">
-      <div class="ff-label">show-recommendations</div>
-      <div class="ff-sub">Show "Recommended" section on Home</div>
-      <div class="ff-toggle">
-        <button class="ff-btn on"  onclick="setFF('show-recommendations',true)">ON</button>
-        <button class="ff-btn off" onclick="setFF('show-recommendations',false)">OFF</button>
-      </div>
-    </div>
-    <div class="ff-note">💡 These mirror the flags in your PostHog dashboard. Set them there to control all real users.</div>
-  </div>
 </div>
 
 <script>
@@ -426,15 +379,84 @@ function mkUser(){
 
 let users=Array.from({length:4},mkUser), currentUser=users[0], cart=[], detailProduct=null, qty=1;
 
+// ══════════ FEATURE FLAGS — PostHog only ══════════
+// Defaults are all off; PostHog evaluation will enable them for matching users
+const FLAGS={'promo-banner':false,'checkout-button-color':'control','show-recommendations':false};
+
+function applyFlags(){
+  // promo-banner
+  const banner = document.getElementById('promoBanner');
+  if(FLAGS['promo-banner']){
+    banner.classList.add('promo');
+  } else {
+    banner.classList.remove('promo');
+    banner.style.display = 'none';
+  }
+  // show-recommendations
+  document.getElementById('recommendedSection').style.display = FLAGS['show-recommendations'] ? 'block' : 'none';
+  // checkout-button-color — applied whenever cart renders
+  applyButtonColor();
+  if(currentPage === 'cart') renderCart();
+}
+
+function applyButtonColor(){
+  const btn=document.getElementById('atcBtn');
+  if(!btn)return;
+  btn.className='atc-btn '+(FLAGS['checkout-button-color']==='green'?'green':'red');
+}
+
+function loadPHFlags(){
+  try{
+    if(typeof posthog==='undefined')return;
+    posthog.onFeatureFlags(()=>{
+      const promo  = posthog.isFeatureEnabled('promo-banner');
+      const rec    = posthog.isFeatureEnabled('show-recommendations');
+      const color  = posthog.getFeatureFlag('checkout-button-color');
+      if(promo  !== undefined) FLAGS['promo-banner']          = promo;
+      if(rec    !== undefined) FLAGS['show-recommendations']  = rec;
+      if(color)                FLAGS['checkout-button-color'] = color;
+      applyFlags();
+      log('feature_flags_loaded',{
+        'promo-banner': FLAGS['promo-banner'],
+        'btn-color':    FLAGS['checkout-button-color'],
+        'recs':         FLAGS['show-recommendations']
+      });
+    });
+  }catch(e){}
+}
+
+// ══════════ USERS ══════════
 function addUser(){const u=mkUser();users.push(u);switchUser(u);}
+
 function switchUser(u){
   currentUser=u; cart=[]; updateCartBadge();
-  try{if(posthog?.reset)posthog.reset();
-    if(posthog?.identify)posthog.identify(u.email,{name:u.name,email:u.email,city:u.region.city,country:u.region.country,device_type:u.device,plan:u.plan});
+  try{
+    // 1. Reset the PostHog session so it becomes a fresh user
+    if(posthog?.reset) posthog.reset();
+
+    // 2. Identify with the new user — country is the key property
+    //    PostHog release condition must match on: country is one of China, Japan, Malaysia, Singapore
+    if(posthog?.identify) posthog.identify(u.email,{
+      name:        u.name,
+      email:       u.email,
+      city:        u.region.city,
+      country:     u.region.country,   // ← this is what the release condition evaluates
+      device_type: u.device,
+      plan:        u.plan
+    });
+
+    // 3. Re-fetch flags for the new identity, then re-register the callback
+    if(posthog?.reloadFeatureFlags){
+      posthog.reloadFeatureFlags();
+      loadPHFlags();
+    }
   }catch(e){}
-  renderUsers(); showToast(`Switched to ${u.emoji} ${u.name} · ${u.region.flag} ${u.region.city}`);
-  log('user_switched',{name:u.name,city:u.region.city});
+
+  renderUsers();
+  showToast(`Switched to ${u.emoji} ${u.name} · ${u.region.flag} ${u.region.city}`);
+  log('user_switched',{name:u.name,city:u.region.city,country:u.region.country});
 }
+
 function renderUsers(){
   document.getElementById('userPills').innerHTML=users.map(u=>`
     <div class="user-pill ${u.id===currentUser.id?'active':''}" onclick="switchUser(users.find(x=>x.id==='${u.id}'))">
@@ -459,9 +481,8 @@ function goTo(page, cat){
   });
   currentPage=page;
 
-  // fire $pageview with pathname
-  const pathMap={home:'/',products:'/products',detail:'/product/'+( detailProduct?.id||''),cart:'/cart',checkout:'/checkout',confirmation:'/confirmation',about:'/about',contact:'/contact'};
-  ph('$pageview',{$current_url: window.location.origin + (pathMap[page]||'/'+page), page_name: page});
+  const pathMap={home:'/',products:'/products',detail:'/product/'+(detailProduct?.id||''),cart:'/cart',checkout:'/checkout',confirmation:'/confirmation',about:'/about',contact:'/contact'};
+  ph('$pageview',{$current_url: window.location.origin+(pathMap[page]||'/'+page), page_name: page});
 
   if(page==='products'){renderProducts(cat||'All'); if(cat) setActiveChip(cat);}
   if(page==='cart') renderCart();
@@ -554,8 +575,7 @@ function renderCart(){
     <div class="summary-row"><span>Subtotal (${cart.length} items)</span><span>¥${total}</span></div>
     <div class="summary-row"><span>Shipping</span><span style="color:#27ae60">Free</span></div>
     <div class="summary-total"><span>Total</span><span style="color:#e44d26">¥${total}</span></div>
-    <button class="checkout-btn ${btnClass}" onclick="goToCheckout()">Proceed to Checkout →</button>
-    <div style="font-size:10px;color:#bbb;margin-top:8px;text-align:center;">🚩 Button color controlled by <b>checkout-button-color</b> flag</div>`;
+    <button class="checkout-btn ${btnClass}" onclick="goToCheckout()">Proceed to Checkout →</button>`;
 }
 function removeCart(i){
   ph('remove_from_cart',{product_name:cart[i].name});
@@ -579,49 +599,6 @@ function placeOrder(){
   goTo('confirmation');
 }
 
-// ══════════ FEATURE FLAGS ══════════
-const FLAGS={'promo-banner':true,'checkout-button-color':'red','show-recommendations':true};
-
-function setFF(key,val){
-  FLAGS[key]=val;
-  ph('feature_flag_overridden',{flag:key,value:val,user:currentUser.email});
-  applyFlags();
-  showToast(`🚩 Flag "${key}" set to: ${val}`);
-  // Also call PostHog to log the flag exposure
-  try{if(posthog?.capture) posthog.capture('$feature_flag_called',{$feature_flag:key,$feature_flag_response:val});}catch(e){}
-}
-function applyFlags(){
-  // promo-banner
-  document.getElementById('promoBanner').style.display = FLAGS['promo-banner'] ? 'block' : 'none';
-  // show-recommendations
-  document.getElementById('recommendedSection').style.display = FLAGS['show-recommendations'] ? 'block' : 'none';
-  // checkout-button-color — applied when cart renders
-  applyButtonColor();
-  renderCart();
-}
-function applyButtonColor(){
-  const btn=document.getElementById('atcBtn');
-  if(!btn)return;
-  const isGreen=FLAGS['checkout-button-color']==='green';
-  btn.className='atc-btn '+(isGreen?'green':'red');
-}
-// Load from PostHog on start
-function loadPHFlags(){
-  try{
-    if(typeof posthog==='undefined')return;
-    posthog.onFeatureFlags(()=>{
-      const promo=posthog.isFeatureEnabled('promo-banner');
-      const rec=posthog.isFeatureEnabled('show-recommendations');
-      const color=posthog.getFeatureFlag('checkout-button-color');
-      if(promo!==undefined) FLAGS['promo-banner']=promo;
-      if(rec!==undefined) FLAGS['show-recommendations']=rec;
-      if(color) FLAGS['checkout-button-color']=color;
-      applyFlags();
-      log('feature_flags_loaded',{'promo-banner':FLAGS['promo-banner'],'btn-color':FLAGS['checkout-button-color'],'recs':FLAGS['show-recommendations']});
-    });
-  }catch(e){}
-}
-
 // ══════════ UTILS ══════════
 function ph(event, props={}){
   try{if(posthog?.capture) posthog.capture(event,{...props,simulated_user:currentUser?.name});}catch(e){}
@@ -639,13 +616,21 @@ function showToast(msg){
   const t=document.getElementById('toast'); t.textContent=msg;
   t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600);
 }
-let elogOpen=true, ffOpen=true;
+let elogOpen=true;
 function toggleElog(){elogOpen=!elogOpen;document.getElementById('elogBody').style.display=elogOpen?'block':'none';document.getElementById('elogToggle').textContent=elogOpen?'▲':'▼';}
-function toggleFF(){ffOpen=!ffOpen;document.getElementById('ffBody').style.display=ffOpen?'block':'none';document.getElementById('ffToggle').textContent=ffOpen?'▲':'▼';}
 
 // ══════════ INIT ══════════
 renderUsers();
-try{if(posthog?.identify) posthog.identify(currentUser.email,{name:currentUser.name,email:currentUser.email,city:currentUser.region.city,country:currentUser.region.country});}catch(e){}
+try{
+  if(posthog?.identify) posthog.identify(currentUser.email,{
+    name:        currentUser.name,
+    email:       currentUser.email,
+    city:        currentUser.region.city,
+    country:     currentUser.region.country,
+    device_type: currentUser.device,
+    plan:        currentUser.plan
+  });
+}catch(e){}
 applyFlags();
 goTo('home');
 loadPHFlags();
