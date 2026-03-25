@@ -501,6 +501,7 @@ function applyFlags(){
     banner.classList.add('promo');
   } else if(promoVariant === 'icon'){
     document.getElementById('promoIconWrap').style.display = 'block';
+    ph('promo_seen', {variant: 'icon'});
   }
   // 'popup' → triggered in goTo('home')
   // false / 'control' → nothing
