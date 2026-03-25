@@ -43,10 +43,31 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
 .add-user-btn{border:1px dashed rgba(255,255,255,.25);background:none;border-radius:20px;padding:4px 12px;color:#888;font-size:11px;cursor:pointer;white-space:nowrap;}
 .add-user-btn:hover{border-color:#e94560;color:#e94560;}
 
-/* FEATURE FLAG BANNER */
+/* PROMO BANNER (variant: banner) */
 .ff-banner{display:none;padding:10px 32px;font-size:13px;font-weight:600;text-align:center;animation:slideDown .3s ease;}
 .ff-banner.promo{background:linear-gradient(90deg,#f39c12,#e44d26);color:#fff;display:block;}
 @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+/* PROMO POPUP (variant: popup) */
+.promo-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:800;align-items:center;justify-content:center;}
+.promo-overlay.open{display:flex;}
+.promo-modal{background:#fff;border-radius:20px;padding:36px 32px;max-width:380px;width:90%;text-align:center;position:relative;animation:popIn .3s ease;}
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.promo-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#aaa;}
+.promo-close:hover{color:#333;}
+.promo-modal h2{font-size:22px;font-weight:800;margin-bottom:8px;}
+.promo-modal p{color:#666;font-size:14px;margin-bottom:20px;line-height:1.6;}
+.promo-cta{background:linear-gradient(135deg,#e44d26,#f39c12);color:#fff;border:none;padding:12px 28px;border-radius:24px;font-size:14px;font-weight:700;cursor:pointer;transition:transform .15s;}
+.promo-cta:hover{transform:translateY(-2px);}
+.promo-skip{display:block;margin-top:12px;background:none;border:none;color:#bbb;font-size:12px;cursor:pointer;}
+.promo-skip:hover{color:#999;}
+
+/* PROMO ICON (variant: icon) */
+.promo-icon-wrap{position:fixed;bottom:80px;left:16px;z-index:300;display:none;}
+.promo-icon-expanded{display:none;background:#fff;border-radius:12px;padding:16px;margin-bottom:8px;box-shadow:0 4px 20px rgba(0,0,0,.15);font-size:13px;min-width:200px;}
+.promo-icon-expanded.open{display:block;animation:fadeIn .2s ease;}
+.promo-icon-btn{background:linear-gradient(135deg,#f39c12,#e44d26);color:#fff;border:none;border-radius:50px;padding:10px 16px;cursor:pointer;box-shadow:0 4px 16px rgba(228,77,38,.4);display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 4px 16px rgba(228,77,38,.4)}50%{box-shadow:0 4px 28px rgba(228,77,38,.75)}}
 
 /* PAGE WRAPPER */
 .page{display:none;animation:fadeIn .2s ease;}
@@ -64,7 +85,6 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
 .hero p{font-size:15px;opacity:.9;margin-bottom:24px;}
 .hero-btn{background:#fff;color:#e44d26;border:none;padding:12px 32px;border-radius:28px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .15s;}
 .hero-btn:hover{transform:translateY(-2px);}
-
 .section{padding:28px 32px;}
 .section-title{font-size:18px;font-weight:700;margin-bottom:16px;}
 
@@ -155,45 +175,84 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
 .elog-body{max-height:150px;overflow-y:auto;padding:6px;}
 .elog-item{font-size:10px;color:#a8dadc;padding:3px 6px;border-left:2px solid #e94560;margin-bottom:3px;background:rgba(233,69,96,.07);border-radius:0 4px 4px 0;}
 
-/* --- SIMULATION CONTROL PANEL --- */
-#sim-panel {
-  position: fixed; top: 70px; right: 20px; width: 300px;
-  background: #1a1a2e; color: #fff; border: 2px solid #e94560;
-  border-radius: 12px; z-index: 9999; padding: 15px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5); font-family: sans-serif;
-}
-.sim-title { font-weight: 800; font-size: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; color: #e94560; }
-.sim-controls { display: flex; gap: 8px; margin-bottom: 12px; }
-.sim-btn { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; transition: 0.2s; }
-#btn-start { background: #27ae60; color: white; }
-#btn-stop { background: #c0392b; color: white; }
-.sim-progress-bg { background: #333; height: 8px; border-radius: 4px; margin-bottom: 10px; overflow: hidden; }
-#sim-progress-bar { background: #e94560; width: 0%; height: 100%; transition: width 0.3s; }
-#sim-log { background: #0f3460; height: 120px; overflow-y: auto; font-size: 10px; padding: 8px; border-radius: 6px; border: 1px solid #16213e; line-height: 1.4; }
-.sim-log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
+/* SIMULATION PANEL */
+#sim-panel{position:fixed;top:70px;right:20px;width:300px;background:#1a1a2e;color:#fff;border:2px solid #e94560;border-radius:12px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.5);overflow:hidden;}
+.sim-head{background:#0f3460;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;}
+.sim-head-title{font-weight:800;font-size:13px;color:#e94560;}
+.sim-head-toggle{color:#888;font-size:11px;}
+.sim-body{padding:14px;}
+.sim-controls{display:flex;gap:8px;margin-bottom:12px;}
+.sim-btn{flex:1;padding:8px;border:none;border-radius:6px;cursor:pointer;font-weight:700;font-size:12px;transition:.2s;}
+#btn-start{background:#27ae60;color:#fff;}
+#btn-start:hover{background:#219a52;}
+#btn-stop{background:#c0392b;color:#fff;}
+#btn-stop:hover{background:#a93226;}
+.sim-progress-bg{background:#333;height:6px;border-radius:4px;margin-bottom:10px;overflow:hidden;}
+#sim-progress-bar{background:linear-gradient(90deg,#e94560,#f39c12);width:0%;height:100%;transition:width .3s;}
+#sim-current-task{font-size:10px;color:#888;margin-bottom:8px;min-height:14px;}
+#sim-log{background:#0f3460;height:110px;overflow-y:auto;font-size:10px;padding:8px;border-radius:6px;border:1px solid #16213e;line-height:1.5;}
+.sim-log-entry{margin-bottom:3px;padding-bottom:3px;border-bottom:1px solid rgba(255,255,255,.05);}
+.sim-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;}
+.sim-stat{background:#0f3460;border-radius:6px;padding:6px 8px;text-align:center;}
+.sim-stat-val{font-size:16px;font-weight:800;color:#e94560;}
+.sim-stat-label{font-size:9px;color:#888;margin-top:2px;}
 </style>
 </head>
 <body>
-<!-- Simulation Panel -->
-<div id="sim-panel">
-  <div class="sim-title">🤖 AUTO-PILOT ENGINE <span>v1.0</span></div>
-  <div class="sim-controls">
-    <button id="btn-start" class="sim-btn" onclick="runSimulationBatch()">START</button>
-    <button id="btn-stop" class="sim-btn" onclick="stopSimulation()">STOP</button>
+
+<!-- PROMO POPUP (variant: popup) -->
+<div class="promo-overlay" id="promoOverlay">
+  <div class="promo-modal">
+    <button class="promo-close" onclick="closePromoPopup()">✕</button>
+    <div style="font-size:52px;margin-bottom:12px;">🎉</div>
+    <h2>Spring Sale is Here!</h2>
+    <p>Enjoy up to <strong>50% off</strong> sitewide.<br>Use code <strong style="color:#e44d26;">SPRING50</strong> at checkout.</p>
+    <button class="promo-cta" onclick="closePromoPopup(); ph('promo_popup_cta_clicked',{variant:'popup'}); goTo('products');">Shop the Sale →</button>
+    <button class="promo-skip" onclick="closePromoPopup(); ph('promo_popup_dismissed',{variant:'popup'});">No thanks, skip</button>
   </div>
-  <div class="sim-progress-bg"><div id="sim-progress-bar"></div></div>
-  <div id="sim-current-task" style="font-size: 11px; margin-bottom: 8px; color: #888;">Standby...</div>
-  <div id="sim-log"></div>
 </div>
-  
+
+<!-- PROMO ICON (variant: icon) -->
+<div class="promo-icon-wrap" id="promoIconWrap">
+  <div class="promo-icon-expanded" id="promoIconExpanded">
+    <div style="font-weight:700;margin-bottom:4px;color:#333;">🔥 Spring Sale!</div>
+    <div style="color:#666;font-size:12px;margin-bottom:10px;">Up to 50% off · Code <strong>SPRING50</strong></div>
+    <button onclick="ph('promo_icon_cta_clicked',{variant:'icon'}); goTo('products');" style="width:100%;background:#e44d26;color:#fff;border:none;padding:8px;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;">Shop Now →</button>
+  </div>
+  <button class="promo-icon-btn" onclick="togglePromoIconExpand()">🔥 <span>SALE ON</span></button>
+</div>
+
+<!-- SIMULATION PANEL -->
+<div id="sim-panel">
+  <div class="sim-head" onclick="toggleSimPanel()">
+    <span class="sim-head-title">🤖 AUTO-PILOT ENGINE</span>
+    <small class="sim-head-toggle" id="simToggle">▲</small>
+  </div>
+  <div class="sim-body" id="sim-body">
+    <div class="sim-controls">
+      <button id="btn-start" class="sim-btn" onclick="runSimulationBatch()">▶ START</button>
+      <button id="btn-stop"  class="sim-btn" onclick="stopSimulation()">■ STOP</button>
+    </div>
+    <div class="sim-progress-bg"><div id="sim-progress-bar"></div></div>
+    <div id="sim-current-task">Standby...</div>
+    <div id="sim-log"></div>
+    <div class="sim-stats">
+      <div class="sim-stat"><div class="sim-stat-val" id="stat-completed">0</div><div class="sim-stat-label">Completed</div></div>
+      <div class="sim-stat"><div class="sim-stat-val" id="stat-abandoned">0</div><div class="sim-stat-label">Abandoned</div></div>
+      <div class="sim-stat"><div class="sim-stat-val" id="stat-control">0</div><div class="sim-stat-label">Control btn</div></div>
+      <div class="sim-stat"><div class="sim-stat-val" id="stat-green">0</div><div class="sim-stat-label">Green btn</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="logo" onclick="goTo('home')">🛍 ShopDemo</div>
   <div class="nav-links">
-    <button class="nav-link" id="nav-home"    onclick="goTo('home')">Home</button>
+    <button class="nav-link" id="nav-home"     onclick="goTo('home')">Home</button>
     <button class="nav-link" id="nav-products" onclick="goTo('products')">Products</button>
-    <button class="nav-link" id="nav-about"   onclick="goTo('about')">About</button>
-    <button class="nav-link" id="nav-contact" onclick="goTo('contact')">Contact</button>
+    <button class="nav-link" id="nav-about"    onclick="goTo('about')">About</button>
+    <button class="nav-link" id="nav-contact"  onclick="goTo('contact')">Contact</button>
   </div>
   <div class="nav-right">
     <button class="cart-btn" onclick="goTo('cart')">🛒 Cart <span class="cart-badge" id="cartBadge">0</span></button>
@@ -207,12 +266,10 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
   <button class="add-user-btn" onclick="addUser()">＋ Random user</button>
 </div>
 
-<!-- FEATURE FLAG BANNER (controlled by PostHog promo-banner flag) -->
-<div class="ff-banner promo" id="promoBanner">
+<!-- PROMO BANNER (variant: banner) — no 'promo' class hardcoded, applyFlags controls it -->
+<div class="ff-banner" id="promoBanner">
   🔥 SPRING SALE — Up to 50% off! Use code <strong>SPRING50</strong> at checkout
 </div>
-
-<!-- ══════════ PAGES ══════════ -->
 
 <!-- HOME -->
 <div class="page" id="page-home">
@@ -225,13 +282,12 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
     <div class="section-title">🔥 Featured Categories</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;">
       <div onclick="goTo('products','数码'); ph('category_clicked',{category:'Electronics'})"  style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">📱<div style="font-size:13px;font-weight:700;margin-top:8px;">Electronics</div></div>
-      <div onclick="goTo('products','服饰'); ph('category_clicked',{category:'Fashion'})"    style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">👕<div style="font-size:13px;font-weight:700;margin-top:8px;">Fashion</div></div>
-      <div onclick="goTo('products','美妆'); ph('category_clicked',{category:'Beauty'})"     style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">💄<div style="font-size:13px;font-weight:700;margin-top:8px;">Beauty</div></div>
-      <div onclick="goTo('products','家居'); ph('category_clicked',{category:'Home'})"       style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">🏠<div style="font-size:13px;font-weight:700;margin-top:8px;">Home</div></div>
-      <div onclick="goTo('products','食品'); ph('category_clicked',{category:'Food'})"       style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">🍜<div style="font-size:13px;font-weight:700;margin-top:8px;">Food</div></div>
+      <div onclick="goTo('products','服饰'); ph('category_clicked',{category:'Fashion'})"     style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">👕<div style="font-size:13px;font-weight:700;margin-top:8px;">Fashion</div></div>
+      <div onclick="goTo('products','美妆'); ph('category_clicked',{category:'Beauty'})"      style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">💄<div style="font-size:13px;font-weight:700;margin-top:8px;">Beauty</div></div>
+      <div onclick="goTo('products','家居'); ph('category_clicked',{category:'Home'})"        style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">🏠<div style="font-size:13px;font-weight:700;margin-top:8px;">Home</div></div>
+      <div onclick="goTo('products','食品'); ph('category_clicked',{category:'Food'})"        style="background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);">🍜<div style="font-size:13px;font-weight:700;margin-top:8px;">Food</div></div>
     </div>
   </div>
-  <!-- Recommended section — controlled by PostHog show-recommendations flag -->
   <div class="section" id="recommendedSection">
     <div class="section-title">⭐ Recommended for You</div>
     <div class="product-grid" id="recommendedGrid"></div>
@@ -268,9 +324,9 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
       <div id="detailBadge"></div>
       <h2 id="detailName"></h2>
       <div class="detail-price" id="detailPrice"></div>
-      <div class="detail-orig" id="detailOrig"></div>
-      <p class="detail-desc" id="detailDesc"></p>
-      <div class="detail-tags" id="detailTags"></div>
+      <div class="detail-orig"  id="detailOrig"></div>
+      <p class="detail-desc"    id="detailDesc"></p>
+      <div class="detail-tags"  id="detailTags"></div>
       <div class="qty-row">
         <button class="qty-btn" onclick="changeQty(-1)">−</button>
         <span class="qty-val" id="qtyVal">1</span>
@@ -302,7 +358,7 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
       <h3>📦 Shipping Information</h3>
       <div class="form-grid">
         <div class="form-group"><label>First Name</label><input id="ckFname" type="text" placeholder="John"></div>
-        <div class="form-group"><label>Last Name</label><input id="ckLname" type="text" placeholder="Doe"></div>
+        <div class="form-group"><label>Last Name</label> <input id="ckLname" type="text" placeholder="Doe"></div>
         <div class="form-group full"><label>Email</label><input id="ckEmail" type="email" placeholder="john@example.com"></div>
         <div class="form-group full"><label>Address</label><input id="ckAddr" type="text" placeholder="123 Main Street"></div>
         <div class="form-group"><label>City</label><input id="ckCity" type="text" placeholder="New York"></div>
@@ -320,7 +376,7 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
       <div class="form-grid">
         <div class="form-group full"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242"></div>
         <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY"></div>
-        <div class="form-group"><label>CVV</label><input type="text" placeholder="123"></div>
+        <div class="form-group"><label>CVV</label>  <input type="text" placeholder="123"></div>
       </div>
     </div>
     <button class="place-btn" onclick="placeOrder()">Place Order →</button>
@@ -375,123 +431,155 @@ nav{background:#fff;padding:0 32px;height:58px;display:flex;align-items:center;j
 </div>
 
 <script>
-// ══════════ USERS ══════════
+// ══════════ CONSTANTS ══════════
 const FNAMES=['Alice','Bob','Carlos','Diana','Emily','Frank','Grace','Henry','Iris','James','Karen','Leo'];
 const LNAMES=['Wang','Smith','Garcia','Kim','Chen','Patel','Müller','Rossi','Ahmed','Silva'];
 const DOMAINS=['gmail.com','yahoo.com','outlook.com','icloud.com','hotmail.com'];
 const REGIONS=[
-  {city:'Beijing',country:'China',flag:'🇨🇳'},
-  {city:'Shanghai',country:'China',flag:'🇨🇳'},
-  {city:'Singapore',country:'Singapore',flag:'🇸🇬'},
-  {city:'New York',country:'USA',flag:'🇺🇸'},
-  {city:'London',country:'UK',flag:'🇬🇧'},
-  {city:'Tokyo',country:'Japan',flag:'🇯🇵'},
-  {city:'Sydney',country:'Australia',flag:'🇦🇺'},
-  {city:'Dubai',country:'UAE',flag:'🇦🇪'},
-  {city:'Kuala Lumpur',country:'Malaysia',flag:'🇲🇾'},
-  {city:'Paris',country:'France',flag:'🇫🇷'},
+  {city:'Beijing',      country:'China',     flag:'🇨🇳'},
+  {city:'Shanghai',     country:'China',     flag:'🇨🇳'},
+  {city:'Singapore',    country:'Singapore', flag:'🇸🇬'},
+  {city:'New York',     country:'USA',       flag:'🇺🇸'},
+  {city:'London',       country:'UK',        flag:'🇬🇧'},
+  {city:'Tokyo',        country:'Japan',     flag:'🇯🇵'},
+  {city:'Sydney',       country:'Australia', flag:'🇦🇺'},
+  {city:'Dubai',        country:'UAE',       flag:'🇦🇪'},
+  {city:'Kuala Lumpur', country:'Malaysia',  flag:'🇲🇾'},
+  {city:'Paris',        country:'France',    flag:'🇫🇷'},
 ];
 const DEVICES=['desktop','mobile','tablet'];
 const PLANS=['free','pro','enterprise'];
 const EMOJIS=['😀','😎','🤓','🧑‍💻','👩‍💼','🧔','👩‍🎨','🧑‍🚀'];
 const COLORS=['#e94560','#0f3460','#533483','#2d6a4f','#e76f51','#264653','#2a9d8f'];
+const PRODUCTS=[
+  {id:1,name:'AirPods Pro',          emoji:'🎧',cat:'数码',price:1299,orig:1799,desc:'Active noise cancellation with immersive sound. Up to 6hrs battery.',badge:'Hot',      tags:['Audio','Wireless','Apple']},
+  {id:2,name:'Mechanical Keyboard',  emoji:'⌨️',cat:'数码',price:399, orig:599, desc:'Cherry MX Red switches, RGB backlit, compact 75% layout.',         badge:'',         tags:['Keyboard','RGB','Desk']},
+  {id:3,name:'4K Portable Monitor',  emoji:'🖥️',cat:'数码',price:1099,orig:1399,desc:'15.6" IPS panel, USB-C single-cable connection.',                  badge:'New',      tags:['Display','4K','USB-C']},
+  {id:4,name:'Classic Cotton Tee',   emoji:'👕',cat:'服饰',price:89,  orig:149, desc:'100% organic cotton, available in 8 colors.',                     badge:'',         tags:['Cotton','Casual','Unisex']},
+  {id:5,name:'Vintage Denim Jacket', emoji:'🧥',cat:'服饰',price:299, orig:499, desc:'Washed finish, relaxed fit, oversized silhouette.',               badge:'Limited',  tags:['Denim','Vintage','Outerwear']},
+  {id:6,name:'Pro Serum',            emoji:'💆',cat:'美妆',price:259, orig:359, desc:'Dual-action niacinamide + hyaluronic acid formula.',              badge:'Bestseller',tags:['Skincare','Serum','Anti-aging']},
+  {id:7,name:'Scented Candle Set',   emoji:'🕯️',cat:'家居',price:128, orig:198, desc:'Natural soy wax, 60hrs burn time, 3 scents included.',            badge:'',         tags:['Home','Fragrance','Gift']},
+  {id:8,name:'Luosifen Noodles',     emoji:'🍜',cat:'食品',price:38,  orig:58,  desc:'Authentic Liuzhou recipe. Bold, spicy, and unforgettable.',       badge:'Must-try', tags:['Food','Spicy','Instant']},
+];
 
 function rnd(a){return a[Math.floor(Math.random()*a.length)];}
 function rndInt(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function mkUser(){
   const fn=rnd(FNAMES),ln=rnd(LNAMES),r=rnd(REGIONS);
-  return {id:'u_'+Math.random().toString(36).slice(2,8),name:`${fn} ${ln}`,
+  return {
+    id:'u_'+Math.random().toString(36).slice(2,8), name:`${fn} ${ln}`,
     email:`${fn.toLowerCase()}.${ln.toLowerCase()}${rndInt(1,99)}@${rnd(DOMAINS)}`,
-    emoji:rnd(EMOJIS),color:rnd(COLORS),region:r,device:rnd(DEVICES),plan:rnd(PLANS)};
+    emoji:rnd(EMOJIS), color:rnd(COLORS), region:r, device:rnd(DEVICES), plan:rnd(PLANS)
+  };
 }
 
-let users=Array.from({length:4},mkUser), currentUser=users[0], cart=[], detailProduct=null, qty=1;
+let users=Array.from({length:4},mkUser), currentUser=users[0];
+let cart=[], detailProduct=null, qty=1;
+let promoPopupShownThisSession=false;
 
-// ══════════ FEATURE FLAGS — PostHog only ══════════
-// Defaults are all off; PostHog evaluation will enable them for matching users
-const FLAGS={'promo-banner':false,'checkout-button-color':'control','show-recommendations':false};
+// ══════════ FEATURE FLAGS ══════════
+// promo-banner variants: false/'control' = off  |  'banner'  |  'popup'  |  'icon'
+// checkout-button-color variants: 'control' = red  |  'green'
+const FLAGS={
+  'promo-banner':         false,
+  'checkout-button-color':'control',
+  'show-recommendations': false
+};
 
 function applyFlags(){
-  // promo-banner
+  const promoVariant = FLAGS['promo-banner'];
+
+  // Reset all promo surfaces first
   const banner = document.getElementById('promoBanner');
-  if(FLAGS['promo-banner']){
+  banner.classList.remove('promo');
+  banner.style.display = 'none';
+  document.getElementById('promoIconWrap').style.display = 'none';
+  // Popup is triggered on home visit, not here
+
+  if(promoVariant === 'banner'){
     banner.style.display = '';
     banner.classList.add('promo');
-  } else {
-    banner.classList.remove('promo');
-    banner.style.display = 'none';
+  } else if(promoVariant === 'icon'){
+    document.getElementById('promoIconWrap').style.display = 'block';
   }
+  // 'popup' → triggered in goTo('home')
+  // false / 'control' → nothing
+
   // show-recommendations
   document.getElementById('recommendedSection').style.display = FLAGS['show-recommendations'] ? 'block' : 'none';
   // checkout-button-color — applied whenever cart renders
   applyButtonColor();
-  if(currentPage === 'cart') renderCart();
+  if(currentPage==='cart') renderCart();
 }
 
 function applyButtonColor(){
   const btn=document.getElementById('atcBtn');
-  if(!btn)return;
+  if(!btn) return;
   btn.className='atc-btn '+(FLAGS['checkout-button-color']==='green'?'green':'red');
 }
 
 function loadPHFlags(){
   try{
-    if(typeof posthog==='undefined')return;
+    if(typeof posthog==='undefined') return;
     posthog.onFeatureFlags(()=>{
-      const promo  = posthog.isFeatureEnabled('promo-banner');
-      const rec    = posthog.isFeatureEnabled('show-recommendations');
-      const color  = posthog.getFeatureFlag('checkout-button-color');
-      if(promo  !== undefined) FLAGS['promo-banner']          = promo;
+      // promo-banner is multivariate — must use getFeatureFlag, not isFeatureEnabled
+      const promo = posthog.getFeatureFlag('promo-banner');
+      const rec   = posthog.isFeatureEnabled('show-recommendations');
+      const color = posthog.getFeatureFlag('checkout-button-color');
+      if(promo  !== undefined) FLAGS['promo-banner']          = promo || false;
       if(rec    !== undefined) FLAGS['show-recommendations']  = rec;
       if(color)                FLAGS['checkout-button-color'] = color;
       applyFlags();
-      log('feature_flags_loaded',{
-        'promo-banner': FLAGS['promo-banner'],
-        'btn-color':    FLAGS['checkout-button-color'],
-        'recs':         FLAGS['show-recommendations']
-      });
+      log('feature_flags_loaded',{'promo':FLAGS['promo-banner'],'btn':FLAGS['checkout-button-color']});
     });
   }catch(e){}
 }
 
+// ══════════ PROMO HELPERS ══════════
+function showPromoPopup(){
+  document.getElementById('promoOverlay').classList.add('open');
+  ph('promo_seen',{variant:'popup'});
+}
+function closePromoPopup(){
+  document.getElementById('promoOverlay').classList.remove('open');
+}
+let promoIconOpen=false;
+function togglePromoIconExpand(){
+  promoIconOpen=!promoIconOpen;
+  document.getElementById('promoIconExpanded').classList.toggle('open',promoIconOpen);
+  if(promoIconOpen) ph('promo_icon_expanded',{variant:'icon'});
+}
+
 // ══════════ USERS ══════════
-function addUser(){const u=mkUser();users.push(u);switchUser(u);}
+function addUser(){ const u=mkUser(); users.push(u); switchUser(u); }
 
 function switchUser(u){
   currentUser=u; cart=[]; updateCartBadge();
+  promoPopupShownThisSession=false;
+  // Close any open promo surfaces for the previous user
+  closePromoPopup();
+  if(promoIconOpen){ togglePromoIconExpand(); }
   try{
-    // 1. Reset the PostHog session so it becomes a fresh user
-    if(posthog?.reset) posthog.reset();
-
-    // 2. Identify with the new user — country is the key property
-    //    PostHog release condition must match on: country is one of China, Japan, Malaysia, Singapore
+    if(posthog?.reset)    posthog.reset();
     if(posthog?.identify) posthog.identify(u.email,{
-      name:        u.name,
-      email:       u.email,
-      city:        u.region.city,
-      country:     u.region.country,   // ← this is what the release condition evaluates
-      device_type: u.device,
-      plan:        u.plan
+      name:u.name, email:u.email, city:u.region.city,
+      country:u.region.country, device_type:u.device, plan:u.plan
     });
-
-    // 3. Re-fetch flags for the new identity, then re-register the callback
-    if(posthog?.reloadFeatureFlags){
-      posthog.reloadFeatureFlags();
-      loadPHFlags();
-    }
+    if(posthog?.reloadFeatureFlags){ posthog.reloadFeatureFlags(); loadPHFlags(); }
   }catch(e){}
-
   renderUsers();
   showToast(`Switched to ${u.emoji} ${u.name} · ${u.region.flag} ${u.region.city}`);
-  log('user_switched',{name:u.name,city:u.region.city,country:u.region.country});
+  log('user_switched',{name:u.name,country:u.region.country});
 }
 
 function renderUsers(){
   document.getElementById('userPills').innerHTML=users.map(u=>`
     <div class="user-pill ${u.id===currentUser.id?'active':''}" onclick="switchUser(users.find(x=>x.id==='${u.id}'))">
       <div class="u-avatar" style="background:${u.color}">${u.emoji}</div>
-      <div><div class="u-name">${u.name.split(' ')[0]} ${u.id===currentUser.id?'<span class="active-tag">now</span>':''}</div>
-      <div class="u-region">${u.region.flag} ${u.region.city} · ${u.email.split('@')[1]}</div></div>
+      <div>
+        <div class="u-name">${u.name.split(' ')[0]} ${u.id===currentUser.id?'<span class="active-tag">now</span>':''}</div>
+        <div class="u-region">${u.region.flag} ${u.region.city} · ${u.email.split('@')[1]}</div>
+      </div>
     </div>`).join('');
 }
 
@@ -499,45 +587,37 @@ function renderUsers(){
 const PAGES=['home','products','detail','cart','checkout','confirmation','about','contact'];
 let currentPage='home';
 
-function goTo(page, cat){
+function goTo(page,cat){
   PAGES.forEach(p=>{
-    const el=document.getElementById('page-'+p);
-    if(el) el.classList.toggle('active', p===page);
-  });
-  PAGES.forEach(p=>{
-    const n=document.getElementById('nav-'+p);
-    if(n) n.classList.toggle('active', p===page);
+    const el=document.getElementById('page-'+p); if(el) el.classList.toggle('active',p===page);
+    const n =document.getElementById('nav-'+p);  if(n)  n.classList.toggle('active', p===page);
   });
   currentPage=page;
+  const pathMap={home:'/',products:'/products',detail:'/product/'+(detailProduct?.id||''),
+    cart:'/cart',checkout:'/checkout',confirmation:'/confirmation',about:'/about',contact:'/contact'};
+  ph('$pageview',{$current_url:window.location.origin+(pathMap[page]||'/'+page),page_name:page});
 
-  const pathMap={home:'/',products:'/products',detail:'/product/'+(detailProduct?.id||''),cart:'/cart',checkout:'/checkout',confirmation:'/confirmation',about:'/about',contact:'/contact'};
-  ph('$pageview',{$current_url: window.location.origin+(pathMap[page]||'/'+page), page_name: page});
-
-  if(page==='products'){renderProducts(cat||'All'); if(cat) setActiveChip(cat);}
+  if(page==='home'){
+    renderRecommended();
+    // Trigger popup variant once per user session
+    if(FLAGS['promo-banner']==='popup' && !promoPopupShownThisSession){
+      promoPopupShownThisSession=true;
+      setTimeout(showPromoPopup,600);
+    }
+  }
+  if(page==='products'){ renderProducts(cat||'All'); if(cat) setActiveChip(cat); }
   if(page==='cart') renderCart();
-  if(page==='home') renderRecommended();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ══════════ PRODUCTS DATA ══════════
-const PRODUCTS=[
-  {id:1,name:'AirPods Pro',emoji:'🎧',cat:'数码',price:1299,orig:1799,desc:'Active noise cancellation with immersive sound experience. Up to 6hrs battery.',badge:'Hot',tags:['Audio','Wireless','Apple']},
-  {id:2,name:'Mechanical Keyboard K2',emoji:'⌨️',cat:'数码',price:399,orig:599,desc:'Cherry MX Red switches, RGB backlit, compact 75% layout.',badge:'',tags:['Keyboard','RGB','Desk']},
-  {id:3,name:'4K Portable Monitor',emoji:'🖥️',cat:'数码',price:1099,orig:1399,desc:'15.6" IPS panel, USB-C single-cable connection.',badge:'New',tags:['Display','4K','USB-C']},
-  {id:4,name:'Classic Cotton Tee',emoji:'👕',cat:'服饰',price:89,orig:149,desc:'100% organic cotton, available in 8 colors.',badge:'',tags:['Cotton','Casual','Unisex']},
-  {id:5,name:'Vintage Denim Jacket',emoji:'🧥',cat:'服饰',price:299,orig:499,desc:'Washed finish, relaxed fit, oversized silhouette.',badge:'Limited',tags:['Denim','Vintage','Outerwear']},
-  {id:6,name:'Pro Serum',emoji:'💆',cat:'美妆',price:259,orig:359,desc:'Dual-action niacinamide + hyaluronic acid formula.',badge:'Bestseller',tags:['Skincare','Serum','Anti-aging']},
-  {id:7,name:'Scented Candle Set',emoji:'🕯️',cat:'家居',price:128,orig:198,desc:'Natural soy wax, 60hrs burn time, 3 scents included.',badge:'',tags:['Home','Fragrance','Gift']},
-  {id:8,name:'Luosifen Noodles',emoji:'🍜',cat:'食品',price:38,orig:58,desc:'Authentic Liuzhou recipe. Bold, spicy, and unforgettable.',badge:'Must-try',tags:['Food','Spicy','Instant']},
-];
-
+// ══════════ PRODUCTS ══════════
 function renderProducts(cat){
-  const list = cat==='All' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===cat);
+  const list=cat==='All'?PRODUCTS:PRODUCTS.filter(p=>p.cat===cat);
   document.getElementById('productGrid').innerHTML=list.map(p=>pCard(p)).join('');
 }
 function renderRecommended(){
-  const list=PRODUCTS.slice().sort(()=>Math.random()-.5).slice(0,4);
-  document.getElementById('recommendedGrid').innerHTML=list.map(p=>pCard(p)).join('');
+  document.getElementById('recommendedGrid').innerHTML=
+    PRODUCTS.slice().sort(()=>Math.random()-.5).slice(0,4).map(p=>pCard(p)).join('');
 }
 function pCard(p){return`
   <div class="p-card" onclick="openDetail(${p.id})">
@@ -551,45 +631,46 @@ function pCard(p){return`
   </div>`;}
 
 function setActiveChip(cat){
-  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c.textContent.includes(cat)||(cat==='All'&&c.textContent==='All')));
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',
+    c.textContent.includes(cat)||(cat==='All'&&c.textContent==='All')));
 }
 function filterCat(cat,el){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  renderProducts(cat);
-  ph('category_filter',{category:cat});
+  el.classList.add('active'); renderProducts(cat); ph('category_filter',{category:cat});
 }
-
 function openDetail(id){
   detailProduct=PRODUCTS.find(p=>p.id===id); qty=1;
-  document.getElementById('detailImg').textContent=detailProduct.emoji;
+  document.getElementById('detailImg').textContent       =detailProduct.emoji;
   document.getElementById('detailBreadcrumb').textContent=detailProduct.name;
-  document.getElementById('detailName').textContent=detailProduct.name;
-  document.getElementById('detailPrice').textContent='¥'+detailProduct.price;
-  document.getElementById('detailOrig').textContent='Original: ¥'+detailProduct.orig;
-  document.getElementById('detailDesc').textContent=detailProduct.desc;
-  document.getElementById('detailBadge').innerHTML=detailProduct.badge?`<div class="p-badge" style="margin-bottom:8px">${detailProduct.badge}</div>`:'';
-  document.getElementById('detailTags').innerHTML=detailProduct.tags.map(t=>`<span class="tag">${t}</span>`).join('');
+  document.getElementById('detailName').textContent      =detailProduct.name;
+  document.getElementById('detailPrice').textContent     ='¥'+detailProduct.price;
+  document.getElementById('detailOrig').textContent      ='Original: ¥'+detailProduct.orig;
+  document.getElementById('detailDesc').textContent      =detailProduct.desc;
+  document.getElementById('detailBadge').innerHTML       =detailProduct.badge?`<div class="p-badge" style="margin-bottom:8px">${detailProduct.badge}</div>`:'';
+  document.getElementById('detailTags').innerHTML        =detailProduct.tags.map(t=>`<span class="tag">${t}</span>`).join('');
   document.getElementById('qtyVal').textContent=1;
   applyButtonColor();
   ph('product_viewed',{product_id:id,product_name:detailProduct.name,price:detailProduct.price,category:detailProduct.cat});
   goTo('detail');
 }
-function changeQty(d){qty=Math.max(1,qty+d);document.getElementById('qtyVal').textContent=qty;}
+function changeQty(d){ qty=Math.max(1,qty+d); document.getElementById('qtyVal').textContent=qty; }
 function addToCart(){
-  if(!detailProduct)return;
+  if(!detailProduct) return;
   for(let i=0;i<qty;i++) cart.push({...detailProduct});
   updateCartBadge();
   ph('add_to_cart',{product_id:detailProduct.id,product_name:detailProduct.name,price:detailProduct.price,qty});
   showToast(`✅ ${detailProduct.name} added to cart`);
   goTo('cart');
 }
-function updateCartBadge(){document.getElementById('cartBadge').textContent=cart.length;}
+function updateCartBadge(){ document.getElementById('cartBadge').textContent=cart.length; }
 
 // ══════════ CART ══════════
 function renderCart(){
-  const list=document.getElementById('cartList'), sum=document.getElementById('cartSummary');
-  if(!cart.length){list.innerHTML='<div class="empty-state">🛒<br><br>Your cart is empty<br><small style="font-size:13px;color:#ccc">Browse products to add items</small></div>';sum.innerHTML='';return;}
+  const list=document.getElementById('cartList'),sum=document.getElementById('cartSummary');
+  if(!cart.length){
+    list.innerHTML='<div class="empty-state">🛒<br><br>Your cart is empty<br><small style="font-size:13px;color:#ccc">Browse products to add items</small></div>';
+    sum.innerHTML=''; return;
+  }
   list.innerHTML=cart.map((p,i)=>`
     <div class="cart-row">
       <div class="cart-emoji">${p.emoji}</div>
@@ -612,25 +693,27 @@ function removeCart(i){
 }
 function goToCheckout(){
   ph('checkout_initiated',{total:cart.reduce((s,p)=>s+p.price,0),item_count:cart.length});
-  // pre-fill with current user info
   document.getElementById('ckFname').value=currentUser.name.split(' ')[0];
   document.getElementById('ckLname').value=currentUser.name.split(' ')[1]||'';
   document.getElementById('ckEmail').value=currentUser.email;
-  document.getElementById('ckCity').value=currentUser.region.city;
+  document.getElementById('ckCity').value =currentUser.region.city;
   goTo('checkout');
 }
 function placeOrder(){
   const total=cart.reduce((s,p)=>s+p.price,0);
   const orderId='SDP-'+Math.random().toString(36).slice(2,8).toUpperCase();
-  ph('order_completed',{order_id:orderId,total_amount:total,item_count:cart.length,items:cart.map(p=>p.name),user_country:currentUser.region.country,user_plan:currentUser.plan});
+  ph('order_completed',{
+    order_id:orderId, total_amount:total, item_count:cart.length,
+    items:cart.map(p=>p.name), user_country:currentUser.region.country, user_plan:currentUser.plan,
+    button_variant:FLAGS['checkout-button-color']   // ← lets PostHog break down orders by variant
+  });
   document.getElementById('orderId').textContent='Order #'+orderId;
-  cart=[]; updateCartBadge();
-  goTo('confirmation');
+  cart=[]; updateCartBadge(); goTo('confirmation');
 }
 
 // ══════════ UTILS ══════════
-function ph(event, props={}){
-  try{if(posthog?.capture) posthog.capture(event,{...props,simulated_user:currentUser?.name});}catch(e){}
+function ph(event,props={}){
+  try{ if(posthog?.capture) posthog.capture(event,{...props,simulated_user:currentUser?.name}); }catch(e){}
   log(event,props);
 }
 function log(name,props){
@@ -646,134 +729,202 @@ function showToast(msg){
   t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600);
 }
 let elogOpen=true;
-function toggleElog(){elogOpen=!elogOpen;document.getElementById('elogBody').style.display=elogOpen?'block':'none';document.getElementById('elogToggle').textContent=elogOpen?'▲':'▼';}
+function toggleElog(){
+  elogOpen=!elogOpen;
+  document.getElementById('elogBody').style.display=elogOpen?'block':'none';
+  document.getElementById('elogToggle').textContent=elogOpen?'▲':'▼';
+}
+
+// ══════════ SIM PANEL COLLAPSE ══════════
+let simPanelOpen=true;
+function toggleSimPanel(){
+  simPanelOpen=!simPanelOpen;
+  document.getElementById('sim-body').style.display   =simPanelOpen?'block':'none';
+  document.getElementById('simToggle').textContent    =simPanelOpen?'▲':'▼';
+}
+
+// ══════════ SIMULATION ENGINE ══════════
+let isSimulating=false;
+let simStats={completed:0,abandoned:0,control:0,green:0};
+const simWait=ms=>new Promise(res=>setTimeout(res,ms));
+
+function updateSimUI(msg,progress=null){
+  if(msg){
+    const logEl=document.getElementById('sim-log');
+    const entry=document.createElement('div'); entry.className='sim-log-entry';
+    entry.innerHTML=`<span style="color:#e94560">[${new Date().toLocaleTimeString([],{hour12:false})}]</span> ${msg}`;
+    logEl.prepend(entry);
+    document.getElementById('sim-current-task').innerText=msg;
+  }
+  if(progress!==null) document.getElementById('sim-progress-bar').style.width=progress+'%';
+}
+function updateSimStats(){
+  document.getElementById('stat-completed').textContent=simStats.completed;
+  document.getElementById('stat-abandoned').textContent=simStats.abandoned;
+  document.getElementById('stat-control').textContent  =simStats.control;
+  document.getElementById('stat-green').textContent    =simStats.green;
+}
+function stopSimulation(){ isSimulating=false; updateSimUI('🛑 Simulation stopped.'); }
+
+// Switches to a new user and waits for PostHog to evaluate flags before resolving.
+// Uses direct polling instead of onFeatureFlags to avoid stacking callbacks.
+async function simSwitchUser(u){
+  currentUser=u; cart=[]; updateCartBadge();
+  promoPopupShownThisSession=false;
+  closePromoPopup();
+  try{
+    if(posthog?.reset)               posthog.reset();
+    if(posthog?.identify)            posthog.identify(u.email,{
+      name:u.name, email:u.email, city:u.region.city,
+      country:u.region.country, device_type:u.device, plan:u.plan
+    });
+    if(posthog?.reloadFeatureFlags)  posthog.reloadFeatureFlags();
+  }catch(e){}
+  renderUsers();
+  // Give PostHog time to fetch and evaluate flags for this new identity
+  await simWait(1600);
+  try{
+    const promo=posthog?.getFeatureFlag?.('promo-banner');
+    const rec  =posthog?.isFeatureEnabled?.('show-recommendations');
+    const color=posthog?.getFeatureFlag?.('checkout-button-color');
+    if(promo!==undefined) FLAGS['promo-banner']         =promo||false;
+    if(rec!==undefined)   FLAGS['show-recommendations'] =rec;
+    if(color)             FLAGS['checkout-button-color']=color;
+    applyFlags();
+  }catch(e){}
+}
+
+// Handles whatever promo surface this user sees before their main journey begins
+async function simHandlePromo(){
+  const variant=FLAGS['promo-banner'];
+  if(variant==='popup'){
+    // Popup triggers on home visit — simulate user reading it
+    await simWait(700);
+    if(Math.random()<0.35){
+      // 35% click the CTA and go straight to products
+      closePromoPopup();
+      ph('promo_popup_cta_clicked',{variant:'popup',simulated:true});
+      updateSimUI('🎉 Clicked popup CTA → products');
+    } else {
+      // 65% dismiss it and continue normally
+      closePromoPopup();
+      ph('promo_popup_dismissed',{variant:'popup',simulated:true});
+      updateSimUI('👋 Dismissed promo popup');
+    }
+  } else if(variant==='icon'){
+    // ~40% notice and expand the icon
+    if(Math.random()<0.4){
+      togglePromoIconExpand();
+      ph('promo_icon_expanded',{variant:'icon',simulated:true});
+      await simWait(500);
+      if(Math.random()<0.5){
+        ph('promo_icon_cta_clicked',{variant:'icon',simulated:true});
+        updateSimUI('🔥 Clicked promo icon CTA');
+      }
+      if(promoIconOpen) togglePromoIconExpand(); // close it
+    }
+  } else if(variant==='banner'){
+    ph('promo_seen',{variant:'banner',simulated:true});
+    await simWait(200);
+  }
+}
+
+async function runSimulationBatch(){
+  if(isSimulating) return;
+  isSimulating=true;
+  simStats={completed:0,abandoned:0,control:0,green:0};
+  updateSimStats();
+  const batchSize=50;
+  updateSimUI(`🚀 Starting batch of ${batchSize} users...`,0);
+
+  for(let i=0;i<batchSize;i++){
+    if(!isSimulating) break;
+
+    const u=mkUser();
+    await simSwitchUser(u);
+
+    const isGreen=FLAGS['checkout-button-color']==='green';
+    updateSimUI(`👤 ${i+1}/${batchSize}: ${u.name} · ${u.region.flag} ${u.region.country} · btn=${FLAGS['checkout-button-color']}`,
+      ((i+1)/batchSize)*100);
+
+    if(isGreen) simStats.green++; else simStats.control++;
+
+    // ── CONVERSION WEIGHTS ────────────────────────────────────────────────
+    // Green button converts significantly better — produces a clear experiment signal.
+    //   Green:   85% complete,  7% cart abandon,  5% checkout abandon,  3% bounce
+    //   Control: 60% complete, 15% cart abandon, 15% checkout abandon, 10% bounce
+    const w=isGreen
+      ? {convert:0.85, cartAbandon:0.07, checkoutAbandon:0.05}
+      : {convert:0.60, cartAbandon:0.15, checkoutAbandon:0.15};
+
+    // Every user starts at home so the promo can trigger naturally
+    goTo('home');
+    await simWait(400);
+    await simHandlePromo();
+    await simWait(300);
+
+    const roll=Math.random();
+
+    if(roll < w.convert){
+      // ✅ Full purchase
+      updateSimUI('✅ Full purchase');
+      goTo('products');          await simWait(600);
+      openDetail(rnd(PRODUCTS).id); await simWait(700);
+      addToCart();               await simWait(600);
+      goToCheckout();            await simWait(700);
+      placeOrder();
+      simStats.completed++;
+
+    } else if(roll < w.convert+w.cartAbandon){
+      // 🛒 Cart abandon
+      updateSimUI('🛒 Cart abandon');
+      goTo('products');          await simWait(600);
+      openDetail(rnd(PRODUCTS).id); await simWait(700);
+      addToCart();               await simWait(800);
+      ph('cart_abandoned',{button_variant:FLAGS['checkout-button-color']});
+      simStats.abandoned++;
+
+    } else if(roll < w.convert+w.cartAbandon+w.checkoutAbandon){
+      // 💳 Checkout abandon
+      updateSimUI('💳 Checkout abandon');
+      goTo('products');          await simWait(500);
+      openDetail(rnd(PRODUCTS).id); await simWait(600);
+      addToCart();               await simWait(500);
+      goToCheckout();            await simWait(800);
+      ph('checkout_abandoned',{button_variant:FLAGS['checkout-button-color']});
+      simStats.abandoned++;
+
+    } else {
+      // 👀 Browse & bounce
+      updateSimUI('👀 Browse & bounce');
+      goTo('products');          await simWait(700);
+      openDetail(rnd(PRODUCTS).id); await simWait(500);
+      ph('session_bounced',{button_variant:FLAGS['checkout-button-color']});
+      simStats.abandoned++;
+    }
+
+    updateSimStats();
+    await simWait(800); // cooldown so PostHog can flush events before next user
+  }
+
+  if(isSimulating){
+    isSimulating=false;
+    updateSimUI(`🏁 Done! ${simStats.completed} orders · ${simStats.green} green · ${simStats.control} control`,100);
+  }
+}
 
 // ══════════ INIT ══════════
 renderUsers();
 try{
   if(posthog?.identify) posthog.identify(currentUser.email,{
-    name:        currentUser.name,
-    email:       currentUser.email,
-    city:        currentUser.region.city,
-    country:     currentUser.region.country,
-    device_type: currentUser.device,
-    plan:        currentUser.plan
+    name:currentUser.name, email:currentUser.email,
+    city:currentUser.region.city, country:currentUser.region.country,
+    device_type:currentUser.device, plan:currentUser.plan
   });
 }catch(e){}
 applyFlags();
 goTo('home');
 loadPHFlags();
-
-// Simulation Panel Logic
-let isSimulating = false;
-const simWait = (ms) => new Promise(res => setTimeout(res, ms));
-
-function updateSimUI(msg, progress = null) {
-  const log = document.getElementById('sim-log');
-  const task = document.getElementById('sim-current-task');
-  const bar = document.getElementById('sim-progress-bar');
-  
-  if (msg) {
-    const entry = document.createElement('div');
-    entry.className = 'sim-log-entry';
-    entry.innerHTML = `<span style="color:#e94560">[${new Date().toLocaleTimeString([], {hour12:false})}]</span> ${msg}`;
-    log.prepend(entry);
-    task.innerText = msg;
-  }
-  if (progress !== null) bar.style.width = progress + '%';
-}
-
-function stopSimulation() {
-  isSimulating = false;
-  updateSimUI("🛑 Simulation Terminated.");
-}
-
-// ══════════ THE SCENARIOS ══════════
-const SCENARIOS = [
-  {
-    name: "Happy Path (Converter)",
-    weight: 0.8, // 80% chance
-    run: async () => {
-      goTo('products'); await simWait(800);
-      openDetail(rnd(PRODUCTS).id); await simWait(800);
-      addToCart(); await simWait(800);
-      goToCheckout(); await simWait(800);
-      placeOrder();
-    }
-  },
-  {
-    name: "Cart Abandoner (Drop-off at Cart)",
-    weight: 0.05, // 5% of users
-    run: async () => {
-        goTo('products'); await simWait(800);
-        openDetail(rnd(PRODUCTS).id); await simWait(800);
-        addToCart(); await simWait(800);
-        updateSimUI("User abandoned cart. Cold feet!");
-    }
-  },
-  {
-    name: "Checkout Abandoner (Initiated but no order)",
-    weight: 0.05, // 5% chance 
-    run: async () => {
-      goTo('products'); await simWait(500);
-      openDetail(rnd(PRODUCTS).id); await simWait(500);
-      addToCart(); await simWait(500);
-      goToCheckout(); await simWait(800);
-      updateSimUI("User got distracted at checkout and left.");
-      // Note: We do NOT call placeOrder() here.
-    }
-  },
-  {
-    name: "Window Shopper (Bounce)",
-    weight: 0.1, // 10% chance
-    run: async () => {
-      goTo('products'); await simWait(800);
-      openDetail(rnd(PRODUCTS).id); await simWait(500);
-      goTo('about'); await simWait(100);
-      updateSimUI("User left after browsing.");
-    }
-  }
-];
-
-async function runSimulationBatch() {
-  if (isSimulating) return;
-  isSimulating = true;
-  const batchSize = 100; // Number of unique users to simulate per click
-  
-  updateSimUI(`🚀 Starting batch of ${batchSize} users...`);
-
-  for (let i = 0; i < batchSize; i++) {
-    if (!isSimulating) break;
-
-    // 1. Generate & Switch to a completely new user identity
-    const u = mkUser();
-    switchUser(u); // This resets PostHog and identifies the new user
-    
-    const progress = ((i + 1) / batchSize) * 100;
-    updateSimUI(`👤 User ${i+1}: ${u.name} (${u.region.country})`, progress);
-
-    // 2. Pick a scenario based on weighted probability
-    const roll = Math.random();
-    let selected = SCENARIOS[0];
-    let cumulative = 0;
-    for (const s of SCENARIOS) {
-      cumulative += s.weight;
-      if (roll < cumulative) { selected = s; break; }
-    }
-
-    updateSimUI(`🎭 Scenario: ${selected.name}`);
-    await selected.run();
-    
-    // 3. Cool-down between users to let PostHog capture session data
-    await simWait(900);
-  }
-
-  if (isSimulating) {
-    isSimulating = false;
-    updateSimUI("✅ Batch Complete. Metrics should update in PostHog shortly.");
-  }
-}
-
 </script>
 </body>
 </html>
